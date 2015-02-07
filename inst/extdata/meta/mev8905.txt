@@ -1,0 +1,22 @@
+file title  : May 1989 Experimental Vegetation Index
+data type   : byte
+file type   : binary
+columns     : 2160
+rows        : 1080
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 0.1666667
+min. value  : 0
+max. value  : 190
+value units : calibrated
+value error : unknown
+flag value  : 0
+flag def'n  : none
+legend cats : 0
+comment     : Data flags are 0, 1, and 2 for cloud, data drop, and solar elev.

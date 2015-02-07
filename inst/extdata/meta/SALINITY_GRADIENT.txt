@@ -1,0 +1,35 @@
+file title  : Salinity, coastal gradient
+data type   : real [continuous]
+file type   : ascii
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : -0.09
+max. value  : 42.22
+value units : PSU (Practical Salinity Units)
+value error : unknown
+flag value  : -9999
+flag def'n  : non-coastal ocean
+legend cats : 0
+
+
+Comments
+
+SOURCE			: Sydney Levitus, National Oceanographic Data Center, Tim Boyer, Margarita Conkright and OCL/NODC staff
+SOURCE URL		: http://dss.ucar.edu/datasets/ds285.0/
+ORIGINAL DATA SET	: NOAA Horizontal Datum - World Geodetic System (WGS 84) Vertical Datum - shoreline based on Mean High Water (MHW)
+MODIFICATIONS		: The data was reprojected into the geographic (latitude, longitude) projection (+/- 180 and +/-90) from
+RESOLUTION		: 5x5 Degrees
+ORIGINAL DATE		: 1998
+
+Metadata and Additional Access URL--
+
+http://deuteron.kgs.ukans.edu/KWRC/clusterfilt/variablemeta.cfm?variableid=T6_C5&tableid=6&tablename=World Ocean Atlas

@@ -1,0 +1,21 @@
+file title  : Laws Export in Period 9709 9808
+data type   : real
+file type   : binary
+columns     : 2048
+rows        : 1024
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  :  0.175781250
+min. value  : 0
+max. value  : 40
+value units : sqrt 
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 0

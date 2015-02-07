@@ -1,0 +1,21 @@
+file title  : 1987 MGV PCA Component 1
+data type   : integer
+file type   : binary
+columns     : 2160
+rows        : 1080
+ref. system : lat/lon  
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 0.1666667
+min. value  : -495
+max. value  : 1404
+value units : uncalibrated
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 0

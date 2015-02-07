@@ -1,0 +1,30 @@
+file title  : Continuoous field data - evergreen
+data type   : byte
+file type   : binary
+columns     : 43200
+rows        : 21600
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 100
+value units : percent tree cover
+value error : unknown
+flag value  : none
+flag def'n  : none
+comment     : Values represent 10 to 80 represent percent tree cover; where 80
+comment     : represents a tree cover of 80% or greater; 255 represents less than
+comment     : 10% tree cover; and 0 represents open water.
+comment     : Rob Sohlberg, Laboratory for Global Remote Sensing Studies |
+comment     : Dept. of Geography, 2181 LeFrak Hall     lab: 301-405-4292 |
+comment     : University of Maryland                   fax: 301-314-9299 |
+comment     : College Park, MD  20742-8225  USA                          |
+comment     : http://www.geog.umd.edu/landcover/sohlberg.html            |
+
+

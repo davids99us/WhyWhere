@@ -1,0 +1,39 @@
+file title  : SSTemp Intra Annual StDev
+data type   : real
+file type   : ascii
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0.00
+max. value  : 8.73
+value units : Degrees Celsius
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 0
+
+
+Comments:
+
+
+SOURCE			: NCEP
+SOURCE URL		: http://tao.atmos.washington.edu/data_sets/sst_oi/
+ORIGINAL DATA SET	: During the period 1981-1989, the in situ data were obtained from the Comprehensive Ocean Atmosphere Data Set (COADS) for the 1980s. These data (see Slutz, et al., 1985, and Woodruff, et al., 1993) consist of logbook and radio reports. The satellite data were obtained from analyses of NESDIS data produced at the University of Miami's Rosentiel School of Marine and Atmospheric Sciences.
+MODIFICATIONS 		: The data was reprojected into the geographic (latitude, longitude) projection (+/- 180 and +/-90). 
+			  The typology cell structure was overlayed on top of the Legates and Willmott coverage and summary statistics were obtained (by way of the Arcview command, "summarize zones").
+RESOLUTION		: 1 Degree
+ORIGINAL DATE		: 1994
+
+METADATA AND ADDITIONAL ACCESS URLs: 
+http://deuteron.kgs.ukans.edu/KWRC/clusterfilt/browse_variable.cfm#Oceanic
+http://deuteron.kgs.ukans.edu/KWRC/clusterfilt/variablemeta.cfm?variableid=T13_C2&tableid=13&tablename=Orgininal LOICZ Dbase
+
+

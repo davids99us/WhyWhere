@@ -1,0 +1,22 @@
+file title  : Lerner et al Goat Density (1/Km^2)
+data type   : real
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/lon 
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0.0000000
+max. value  : 91.9000015
+value units : animals / square kilometer
+value error : unknown
+flag value  : -1.0000000
+flag def'n  : flag value signifies land with no animals
+legend cats : 0
+comment     : ocean has the value -100

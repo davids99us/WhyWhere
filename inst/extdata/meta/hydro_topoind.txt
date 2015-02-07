@@ -1,0 +1,31 @@
+file title	:  Compound Topographic Index Data
+data type	:	Integer
+file type	:	ArcGrid ASCII	
+columns	:	36000
+rows	:	18000
+ref. system	:	lat/long
+ref. units	:	deg
+unit dist	:	1.00
+min. X	:	-180.00
+max. X	:	180.00
+min. Y	:	-90.00
+max. Y	:	90.00
+pos'n error	:	unknown
+resolution	:	0.01
+min. value	:	-471
+max. value	:	2423
+value units	:	none
+flag value	:	none
+flag def'n	:	none
+legend cats	:	0
+comments	:	Data in the original file represent Compound 
+comments	:	Topographic Index(CTI), commonly referred to as the 
+comments	:	Wetness index. CTI is a function of the upstream 
+comments	:	contributing area and the slope of the landscape. 
+comments	:	The CTI is caculated using the flow accumulation (FA) 
+comments	:	layer along with the slope as: CTI = ln(FA/tan(slope)).
+comments	:	In area of no slope, a CTI value is obtained by 
+comments	:	substituting a slope of 0.001.  In the pgm file, 
+comments	:	NoData(Ocean etc) is represented as 255, MinValue 
+comments	:	as 0, MaxValue as 254, other data are linearly scaled 
+comments	:	between 0 and 254

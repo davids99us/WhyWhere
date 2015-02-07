@@ -1,0 +1,24 @@
+file title	:  Elevation Data
+data type	:	Integer
+file type	:	ArcGrid ASCII	
+columns	:	36000
+rows	:	18000
+ref. system	:	lat/long
+ref. units	:	deg
+unit dist	:	1.00
+min. X	:	-180.00
+max. X	:	180.00
+min. Y	:	-90.00
+max. Y	:	90.00
+pos'n error	:	unknown
+resolution	:	0.01
+min. value	:	-405
+max. value	:	8685
+value units	:	meters
+flag value	:	none
+flag def'n	:	none
+legend cats	:	0
+comments	:	Data in the original file represent elevation. In the
+comments	:	pgm file, NoData(Ocean etc) is represented as 255, 
+comments	:	MinValue as 0, MaxValue as 254, other data are 
+comments	:	linearly scaled between 0 and 254

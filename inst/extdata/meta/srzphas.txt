@@ -1,0 +1,112 @@
+file title  : Staub and Rosenzweig Zobler Soil Phase Codes
+data type   : byte
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 86
+value units : permutations of phase codes
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 87
+category  0 :  0
+category  1 :  1 Blank
+category  2 :  2 St G      stony; glacier (i.e.; land-ice)
+category  3 :  3 St Pf     stony; permafrost
+category  4 :  4 St So     stony; sodic
+category  5 :  5 St IP     stony; intermittent permafrost
+category  6 :  6 St Pf G   stony; permafrost glacier (i.e.; land-ice)
+category  7 :  7 St Pf Po  stony; permafrost ponded
+category  8 :  8 St Po     stony; ponded
+category  9 :  9 St L      stony; lithic
+category 10 : 10 St Pg     stony; petrogypsic
+category 11 : 11 St RD     stony; rock debris
+category 12 : 12 St ?      stony; 27
+category 13 : 13 St IP G   stony; intermittent permafrost glacier (i.e.; land-ice)
+category 14 : 14 St DS     stony; dunes; sand
+category 15 : 15 St D      stony; duripan
+category 16 : 16 St D Po   stony; duripan ponded
+category 17 : 17 St C      stony; cerrado
+category 18 : 18 St L Pc   stony; lithic petrocalcic
+category 19 : 19 St Sa     stony; saline
+category 20 : 20 St Ph     stony; phreactic
+category 21 : 21 St Pc     stony; petrocalcic
+category 22 : 22 St        stony
+category 23 : 23 Ph        phreactic
+category 24 : 24 Ph Pf     phreactic; permafrost
+category 25 : 25 Ph Po     phreactic; ponded
+category 26 : 26 C         cerrado
+category 27 : 27 So Po     sodic; ponded
+category 28 : 28 So DS     sodic; dunes, sand
+category 29 : 29 So        sodic
+category 30 : 30 L So      lithic; sodic
+category 31 : 31 L Pf      lithic; petroferric
+category 32 : 32 L Pf RD G lithic; permafrost; rock debris; glacier (i.e., land-ice)
+category 33 : 33 L Pf      lithic; permafrost
+category 34 : 34 L Pf RD   lithic; permafrost; rock debris
+category 35 : 35 L Sa      lithic; saline
+category 36 : 36 L Pf Po   lithic; permafrost; ponded
+category 37 : 37 L P       lithic; petric
+category 38 : 38 L Po      lithic; ponded
+category 39 : 39 L IP      lithic; intermittent permafrost
+category 40 : 40 L         lithic
+category 41 : 41 L RD      lithic; rock debris
+category 42 : 42 Pf Po     permafrost; ponded
+category 43 : 43 Pf        permafrost
+category 44 : 44 Pf G      permafrost; glacier (i.e., land-ice)
+category 45 : 45 IP Po     intermittent permafrost; ponded
+category 46 : 46 IP        intermittent permafrost
+category 47 : 47 IP G      intermittent permafrost; glacier (i.e., land-ice)
+category 48 : 48 G         glacier (i.e., land-ice)
+category 49 : 49 G St Pf   glacier (i.e., land-ice); stony; permafrost
+category 50 : 50 G Pf      glacier (i.e., land-ice); permafrost
+category 51 : 51 G RD L Pf glacier (i.e., land-ice); rock debris; lithic; permafrost
+category 52 : 52 G L Pf    glacier (i.e., land-ice); lithic; permafrost
+category 53 : 53 G L RD Pf glacier (i.e., land-ice); lithic; rock debris; permafrost
+category 54 : 54 G RD Pf   glacier (i.e., land-ice); rock debris; permafrost
+category 55 : 55 Po DS     ponded; dunes, sand
+category 56 : 56 Po        ponded
+category 57 : 57 Po RD     ponded; rock debris
+category 58 : 58 DS        dunes, sand
+category 59 : 59 DS L      dunes, sand; lithic
+category 60 : 60 RD St     rock debris; stony
+category 61 : 61 RD Pc St  rock debris; petrocalcic; stony
+category 62 : 62 RD G      rock debris; glacier (i.e., land-ice)
+category 63 : 63 RD St DS  rock debris; stony; dunes, sand
+category 64 : 64 RD        rock debris
+category 65 : 65 RD DS     rock debris; dunes, sand
+category 66 : 66 RD St ?   rock debris; stony; 27
+category 67 : 67 RD DS St  rock debris; dunes, sand; stony
+category 68 : 68 ?         27
+category 69 : 69 P Po      petric; ponded
+category 70 : 70 P C       petric; cerrado
+category 71 : 71 P         petric
+category 72 : 72 Pf Po     petroferric; ponded
+category 73 : 73 Pf        petroferric
+category 74 : 74 Pc Po     petrocalcic; ponded
+category 75 : 75 Pc        petrocalcic
+category 76 : 76 Pg        petrogypsic
+category 77 : 77 Pg Po     petrogypsic; ponded
+category 78 : 78 F         fragipan
+category 79 : 79 D         duripan
+category 80 : 80 D Po      duripan; ponded
+category 81 : 81 Sa ?      saline; 27
+category 82 : 82 Sa DS     saline; dunes, sand
+category 83 : 83 Sa        saline
+category 84 : 84 Sa Po     saline; ponded
+category 85 : 85 Sa So     saline; sodic
+category 86 : 86 Sa RD     saline; rock debris
+comment     : no data are provided for water areas or Antarctica
+comment     : category 1 indicates records filled with spaces in the source file
+comment     : categories are unique permutations of phase codes (e.g., 63, 67)
+comment     : Code 27 is undocumented

@@ -1,0 +1,29 @@
+file title  : Matthews and Fung Wetland Data Source
+data type   : integer
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 7
+value units : characteristic classes
+value error : unknown
+flag value  : -1
+flag def'n  : flag value signifies water
+legend cats : 8
+category  0 : 0 other land (non-wet)
+category  1 : 1 U+F+O     UNESCO + FAO + ONC
+category  2 : 2 U+O       UNESCO + ONC
+category  3 : 3 U+F       UNESCO + FAO
+category  4 : 4 U         UNESCO
+category  5 : 5 O+F       ONC + FAO
+category  6 : 6 O         ONC
+category  7 : 7 F         FAO

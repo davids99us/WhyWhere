@@ -1,0 +1,10 @@
+Package: WhyWhere
+Type: Package
+Title: Species distribution modelling
+Version: 0.1
+Date: 2014-12-14
+Author: David Stockwell
+Maintainer: Contact is <d.stockwell@cqu.edu.au>
+Description: This package implements the species modelling algorithm called WhyWhere documented in the article Improving ecological niche models by data mining large environmental datasets for surrogate models" by David R.B. Stockwell in Ecological Modelling Volume 192, Issues 1–2, 15 February 2006, Pages 188–196.
+License: Copyrighted
+Encoding: UTF-8

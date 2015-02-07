@@ -1,0 +1,131 @@
+file title  : Staub and Rosenzweig Zobler Soil Units
+data type   : byte
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 107
+value units : characteristic classes
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 108
+category  0 :   0 Water
+category  1 :   1 99      Land-Ice 
+category  2 :   2 JE      Eutric Fluvisols
+category  3 :   3 JC      Calcaric Fluvisols
+category  4 :   4 JD      Dystric Fluvisols
+category  5 :   5 JT      Thionic Fluvisols
+category  6 :   6 GE      Eutric Gleysols
+category  7 :   7 GC      Calcaric Gleysols
+category  8 :   8 GD      Dystric Gleysols
+category  9 :   9 GM      Mollic Gleysols
+category 10 :  10 GH      Humic Gleysols
+category 11 :  11 GP      Plinthic Gleysols
+category 12 :  12 GX      Gelic Gleysols
+category 13 :  13 RE      Eutric Regosols
+category 14 :  14 RC      Calcaric Regosols
+category 15 :  15 RD      Dystic Regosols
+category 16 :  16 RX      Gelic Regosols
+category 17 :  17 I       Lithosols
+category 18 :  18 KH      Haplic Kastanozems
+category 19 :  19 KK      Calcic Kastanozems
+category 20 :  20 KL      Luvic Kastanozems
+category 21 :  21 CH      Haplic Chernozems
+category 22 :  22 CK      Calcic Chernozems
+category 23 :  23 CL      Luvic Chernozems
+category 24 :  24 CG      Glossic Chernozems
+category 25 :  25 QC      Cambic Arenosols
+category 26 :  26 QL      Luvic Arenosols
+category 27 :  27 QF      Ferralic Arenosols
+category 28 :  28 QA      Albic Arenosols
+category 29 :  29 E       Rendzinas
+category 30 :  30 U       Rankers
+category 31 :  31 TO      Ochric Andosols
+category 32 :  32 TM      Mollic Andosols
+category 33 :  33 TH      Humic Andosols
+category 34 :  34 TV      Vitric Andosols
+category 35 :  35 VP      Pellic Vertisols
+category 36 :  36 VC      Chromic Vertisols
+category 37 :  37 HH      Haplic Phaeozems
+category 38 :  38 HC      Calcic Phaeozems
+category 39 :  39 HL      Luvic Phaeozems
+category 40 :  40 HG      Gleyic Phaeozems
+category 41 :  41 MO      Orthic Greyzems
+category 42 :  42 MG      Gleyic Greyzems
+category 43 :  43 ZO      Orthic Solonchaks
+category 44 :  44 ZM      Mollic Solonchaks
+category 45 :  45 ZT      Takyric Solonchaks
+category 46 :  46 ZG      Gleyic Solonchaks
+category 47 :  47 SO      Orthic Solonetz
+category 48 :  48 SM      Mollic Solonetz
+category 49 :  49 SG      Gleyic Solonetz
+category 50 :  50 YH      Haplic Yermosols
+category 51 :  51 YK      Calcic Yermosols
+category 52 :  52 YY      Gypsic Yermosols
+category 53 :  53 YL      Luvic Yermosols
+category 54 :  54 YT      Takyric Yermosols
+category 55 :  55 XH      Haplic Xerosols
+category 56 :  56 XK      Calcic Xerosols
+category 57 :  57 XY      Gypsic Xerosols
+category 58 :  58 XL      Luvic Xerosols
+category 59 :  59 BE      Eutric Cambisols
+category 60 :  60 BD      Dystric Cambisols
+category 61 :  61 BH      Humic Cambisols
+category 62 :  62 BG      Gleyic Cambisols
+category 63 :  63 BX      Gelic Cambisols
+category 64 :  64 BK      Calcic Cambisols
+category 65 :  65 BC      Chromic Cambisols
+category 66 :  66 BV      Vertic Cambisols
+category 67 :  67 BF      Ferralic Cambisols
+category 68 :  68 LO      Orthic Luvisols
+category 69 :  69 LC      Chromic Luvisols
+category 70 :  70 LK      Calcic Luvisols
+category 71 :  71 LV      Vertic Luvisols
+category 72 :  72 LF      Ferric Luvisols
+category 73 :  73 LA      Albic Luvisols
+category 74 :  74 LP      Plinthic Luvisols
+category 75 :  75 LG      Gleyic Luvisols
+category 76 :  76 WE      Eutric Planosols
+category 77 :  77 WD      Dystric Planosols
+category 78 :  78 WM      Mollic Planosols
+category 79 :  79 WH      Humic Planosols
+category 80 :  80 WS      Solodic Planosols
+category 81 :  81 WX      Gelic Planosols
+category 82 :  82 OE      Eutric Histosols
+category 83 :  83 OD      Dystric Histosols
+category 84 :  84 OX      Gelic Histosols
+category 85 :  85 DE      Eutric Podzoluvisols
+category 86 :  86 DD      Dystric Podzoluvisols
+category 87 :  87 DG      Gleyic Podzoluvisols
+category 88 :  88 PO      Orthic Podzols
+category 89 :  89 PL      Leptiv Podzols
+category 90 :  90 PF      Ferric Podzols
+category 91 :  91 PH      Humic Podzols
+category 92 :  92 PP      Placic Podzols
+category 93 :  93 PG      Gleyic Podzols
+category 94 :  94 FO      Orthic Ferralsols
+category 95 :  95 FX      Xanthic Ferralsols
+category 96 :  96 FR      Rhodic Ferralsols
+category 97 :  97 FH      Humic Ferralsols
+category 98 :  98 FA      Acric Ferralsols
+category 99 :  99 FP      Plinthic Ferralsols
+category100 : 100 AO      Orthic Acrisols
+category101 : 101 AF      Ferric Acrisols
+category102 : 102 AH      Humic Acrisols
+category103 : 103 AP      Plinthic Acrisols
+category104 : 104 AG      Gleyic Acrisols
+category105 : 105 NE      Eutric Nitosols
+category106 : 106 ND      Dystric Nitosols
+category107 : 107 NH      Humic Nitosols
+comment     : first column is category number, second is soil abbreviation
+comment     : categories 81 and 90 do not occur

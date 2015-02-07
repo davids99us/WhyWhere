@@ -1,0 +1,31 @@
+file title  : Staub and Rosenzweig Zobler Near-Surface Soil Texture
+data type   : byte
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 9
+value units : characteristic classes
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 10
+category  0 :  0 Water
+category  1 :  1 COR      Coarse
+category  2 :  2 MED      Medium
+category  3 :  3 FIN      Fine
+category  4 :  4 CM       Coarse-medium
+category  5 :  5 CF       Coarse-fine
+category  6 :  6 MF       Medium-fine
+category  7 :  7 CMF      Coarse-medium-fine
+category  8 :  8 ORG      organic
+category  9 :  9 LI       Land Ice

@@ -1,0 +1,111 @@
+file title  : Olson World Ecosystem Classes Version 1.4D
+data type   : byte
+file type   : binary
+columns     : 2160
+rows        : 1080
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : mixed .167|.5
+min. value  : 0
+max. value  : 73
+value units : classes
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 74
+category  0 : Waters, including Ocean and Inland Waters
+category  1 :  1   CCX    City complexes--being added for MM4 type cat.1
+category  2 :  2   SSG    Short or Sparse Grass/shrub of semiarid climates
+category  3 :  3 Not used
+category  4 :  4 Not used
+category  5 :  5 Not used
+category  6 :  6   TBE    Temperate/Tropical-montane Broadleaf Evergreen covers warm temperate or montane broadleaf evergreen forest [Africa only]
+category  7 :  7 Not used
+category  8 :  8   DMB    Desert, mostly bare stone, clay or sand
+category  9 :  9 Not used
+category 10 : 10 Not used
+category 11 : 11 Not used
+category 12 : 12 Not used
+category 13 : 13 Not used
+category 14 : 14 Not used
+category 15 : 15 Not used
+category 16 : 16  {BES}   Broadleaf Evergreen Scrub, commonly with #46 and #47
+category 17 : 17   ICE    Antarctic ice cap
+category 18 : 18 Not used
+category 19 : 19 Not used
+category 20 : 20   SRC    Snowy, rainy coastal conifer 
+category 21 : 21   MBC    Main Boreal conifer forest, closed or open
+category 22 : 22   SNB    Snowy non-Boreal conifer forest
+category 23 : 23   CDF    Conifer/deciduous, snow persisting in winter
+category 24 : 24   TBC    Temperate Broadleaf/Conifer forest: with deciduous and/or evergreen hardwood trees
+category 25 : 25   SDF    Snowy Deciduous Forest, i.e. summergreen (=cold-deciduous) types
+category 26 : 26   TBF    Temperate broad-leaf forest: deciduous, semideciduous, and some temperate-subtropical broadleaf evergreen types that are least active in winter.
+category 27 : 27   NSC    Non-snowy conifer forest
+category 28 : 28   TMC    Tropical montane complexes, typically evergreen, including dwarfed ("elfin") forest, opening to grass, or tall or short forbs (puna, paramo)
+category 29 : 29   TBS    Tropical Broadleaf Seasonal, with dry or cool season
+category 30 : 30   CFS    Cool Farmland & Settlements, more or less snowy
+category 31 : 31   MFS    Mild/hot farmland & settlements
+category 32 : 32   RGD    Rain-green (drought-deciduous) or very seasonal dry evergreen forests to open woodlands, very frequently burned.
+category 33 : 33   TRF    Tropical RainForest
+category 34 : 34 Not used
+category 35 : 35 Not used
+category 36 : 36   PRA    Paddy rice and associated land mosaics
+category 37 : 37   WCI    Warm/hot cropland, Irrigated extensively
+category 38 : 38   CCI    Cool cropland with Irrigation of variable extent
+category 39 : 39   CCP    Cold cropland and pasture, irrigated locally
+category 40 : 40   CGS    Cool grass/shrub, showy in most years
+category 41 : 41   MGS    Mild/warm/hot grass/shrub
+category 42 : 42   CSM    Cold steppe/meadow +/- larch woods (in Siberia), scrub (Bering sea) or tundra (Tibetan highland)
+category 43 : 43   SGW    Savanna/Grass, seasonal woods:  Trees or shrubs above grass groundcover may be interspersed on many scales in savana belts of varying drought duration and high fire frequency
+category 44 : 44   MBF    Mires include peaty Bogs and Fens (mostly in high latitudes)
+category 45 : 45   MOS    Marsh or other swampy wetlands include various transitionsto or mixtures with trees
+category 46 : 46   MES    Mediterranean-type Evergreen (mostly) broadleaved Scrub and forest relics
+category 47 : 47   DHS    Dry or highland scrub, or open woodland
+category 48 : 48   DEW    Dry Evergreen Woodland or low forest, mapped mostly in interior Australia and South America
+category 49 : 49   HVI    Hot-mild volcanic "islands" (Galapogos), with local denser forest on some older lava flows but wide areas of sparse cover on recent lavas)
+category 50 : 50   SDB    Sand Desert, partly Blowing dunes
+category 51 : 51   SDS    SemiDesert/Desert Scrub/succulent/sparse grass
+category 52 : 52   CSS    Cool/cold shrub semidesert/steppe 
+category 53 : 53   TUN    Tundra (polar, alpine)
+category 54 : 54   TER    Temperate Evergreen Rainforest (e.g., in Chile)
+category 55 : 55   SFW    Snowy Field/Woods complex
+category 56 : 56   FFR    Forest/Field complex with Regrowth after disturbances, mixed with crops and/or other non-wooded lands
+category 57 : 57   SFF    Snowy Forest/Field, commonly openings are pasture and/or mires
+category 58 : 58   FWG    Field/Woods with Grass and/or Cropland
+category 59 : 59   STW    Succulent and Thorn Woods or scrub is widespread
+category 60 : 60   SDT    Southern Dry Taiga or similar aspen/birch with northern and/or mountain conifers
+category 61 : 61   LT     Larch Taiga with deciduous conifer
+category 62 : 62   NMT    Northern or maritime taiga typifies a wide latitude belt or a narrow altitude belt above denser forest or woodland
+category 63 : 63   WTM    Wooded tundra margin or mountain scrub/meadow)
+category 64 : 64   HMW    Heath and Moorland, Wild or artificially managed, as by burning and/or grazing. Can include wetland (#44-45) interspersed with drier heath, with dwarfed or taller, commonly dense scrub on peat or sand
+category 65 : 65   CNW    Coastal: NorthWest quadrant near most land
+category 66 : 66   CNE    Coastal: NorthEast quadrant near most land
+category 67 : 67   CSE    Coastal: SouthEast quadrant near most land
+category 68 : 68   CSW    Coastal: SouthWest quadrant near most land
+category 69 : 69   PDL    Polar desert with rock Lichens, locally abundant or productive (even between mineral grains) but provide little food.  Animals import residues for localized humus
+category 70 : 70   GLA    Glaciers in polar or alpine complex, with rock fringes
+category 71 : 71   SSF    Salt/soda flats desert playas, occasionally with intermittent lakes
+category 72 : 72   MSM    Mangrove and non-saline swamps and tidal Mudflats [Africa only]
+category 73 : 73   ISL    Islands and shore waters in oceans and/or lakes [Elba Island]
+comment     : Olson's 72 World Ecosystem classes (not all classes used)
+comment     : This version is a refinement of WE1.4.  Changes include:
+comment     : (1)  Trimmed desert and bare ground using AVHRR/GVI data
+comment     : (2)  Trimmed coastline areas using elevation data
+comment     : (3)  Added Elba Island
+comment     : (4)  Corrected mis-located tropical montane classes
+comment     : (5)  Other miscellaneous corrections
+comment     : This data file contains mixed resolutions.
+comment     : The data file named OWE14R provides an overlay to determine 
+comment     :   which cells contain 10-minute and 30-minute data.
+lineage     : Derived from Olson World Ecosystems Version 1.4 (prototype)
+lineage     : Version 1.4 was an extension of Version 1.2, previously 
+lineage     :   distributed by CDIAC, Oak Ridge National Laboratory
+completeness: 10-minute updates are incomplete.  Complete coverage of land
+completeness:   areas is achieved by a mix of 10-min and 30-min classes.
+consistency : Mixed spatial dominance at 10-minutes and 30-minutes.

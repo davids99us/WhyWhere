@@ -1,0 +1,34 @@
+file title  : Matthews and Fung Wetland Type
+data type   : integer
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 12
+value units : characteristic classes
+value error : unknown
+flag value  : -1
+flag def'n  : flag value signifies water
+legend cats : 13
+category  0 :  0 other land (non-wet)
+category  1 :  1 frst bog  forested bog
+category  2 :  2 nfrst bog nonforested bog
+category  3 :  3 frst swmp forested swamp
+category  4 :  4 nfst swmp nonforested swamp
+category  5 :  5 alvl form alluvial formations
+category  6 :  6 trpcl/sub tropical/subtropical forest/woodland
+category  7 :  7 temp frst temperate forest/woodland
+category  8 :  8 hi-lat tm high-latitude temperate/boreal forest/woodland/shrub
+category  9 :  9 shrb/dsrt shrubland; xeromorphic formations; desert
+category 10 : 10 wd grass  wooded grassland
+category 11 : 11 nwd grass nonwooded grassland
+category 12 : 12 tundra    tundra

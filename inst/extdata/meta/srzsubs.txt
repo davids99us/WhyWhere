@@ -1,0 +1,303 @@
+file title  : Staub and Rosenzweig Zobler Associated and Included Subsidiary Soil Units
+data type   : integer
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 278
+value units : characteristic classes
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 279
+category  0 :   0
+category  1 :   1 Blank
+category  2 :   2 AF    
+category  3 :   3 AFBD  
+category  4 :   4 AGFA  
+category  5 :   5 AGFO  
+category  6 :   6 AO    
+category  7 :   7 AOFO  
+category  8 :   8 B U   
+category  9 :   9 BC    
+category 10 :  10 BCBH  
+category 11 :  11 BCDD  
+category 12 :  12 BCL   
+category 13 :  13 BCLC  
+category 14 :  14 BCTV  
+category 15 :  15 BCV   
+category 16 :  16 BD    
+category 17 :  17 BDBH  
+category 18 :  18 BDBXDD
+category 19 :  19 BDDD  
+category 20 :  20 BDDDPH
+category 21 :  21 BDLOTO
+category 22 :  22 BDRD  
+category 23 :  23 BDTO  
+category 24 :  24 BDU   
+category 25 :  25 BE    
+category 26 :  26 BEBH  
+category 27 :  27 BEC   
+category 28 :  28 BEE   
+category 29 :  29 BELC  
+category 30 :  30 BELO  
+category 31 :  31 BETO  
+category 32 :  32 BEU   
+category 33 :  33 BF    
+category 34 :  34 BH    
+category 35 :  35 BH U  
+category 36 :  36 BHTV  
+category 37 :  37 BHU   
+category 38 :  38 BK    
+category 39 :  39 BKR   
+category 40 :  40 BKRC  
+category 41 :  41 BKX   
+category 42 :  42 BV    
+category 43 :  43 BVLC  
+category 44 :  44 BXDD  
+category 45 :  45 BXDDOD
+category 46 :  46 BXRC  
+category 47 :  47 CH    
+category 48 :  48 DD    
+category 49 :  49 DDLOTO
+category 50 :  50 DDPH  
+category 51 :  51 DDPL  
+category 52 :  52 DDRD  
+category 53 :  53 E     
+category 54 :  54 E BC  
+category 55 :  55 FHNETO
+category 56 :  56 FO    
+category 57 :  57 FOFX  
+category 58 :  58 FOLF  
+category 59 :  59 FOND  
+category 60 :  60 FP    
+category 61 :  61 GE    
+category 62 :  62 GX    
+category 63 :  63 GXRX  
+category 64 :  64 HH    
+category 65 :  65 HL    
+category 66 :  66 HLKL  
+category 67 :  67 JCXK  
+category 68 :  68 K E   
+category 69 :  69 K     
+category 70 :  70 K U   
+category 71 :  71 KH    
+category 72 :  72 KHJ   
+category 73 :  73 KHU   
+category 74 :  74 KL    
+category 75 :  75 L     
+category 76 :  76 L RE  
+category 77 :  77 L Q   
+category 78 :  78 LA    
+category 79 :  79 LABD  
+category 80 :  80 LC    
+category 81 :  81 LCE   
+category 82 :  82 LCRE  
+category 83 :  83 LCX   
+category 84 :  84 LF    
+category 85 :  85 LFNE  
+category 86 :  86 LFRD  
+category 87 :  87 LFRE  
+category 88 :  88 LG    
+category 89 :  89 LGRE  
+category 90 :  90 LK    
+category 91 :  91 LO    
+category 92 :  92 LOBC  
+category 93 :  93 MO    
+category 94 :  94 NE    
+category 95 :  95 OEPH  
+category 96 :  96 OEPHU 
+category 97 :  97 PHU   
+category 98 :  98 PO    
+category 99 :  99 POBD  
+category100 : 100 POBX  
+category101 : 101 POOD  
+category102 : 102 POOX  
+category103 : 103 Q     
+category104 : 104 R B   
+category105 : 105 R     
+category106 : 106 RB    
+category107 : 107 RCX YK
+category108 : 108 RCX   
+category109 : 109 RCXK  
+category110 : 110 RCYK  
+category111 : 111 RCZO  
+category112 : 112 RD    
+category113 : 113 RDSO  
+category114 : 114 RE    
+category115 : 115 REBE  
+category116 : 116 REQA  
+category117 : 117 RERX  
+category118 : 118 REXK  
+category119 : 119 REYH  
+category120 : 120 RX    
+category121 : 121 RXBC  
+category122 : 122 RXBX  
+category123 : 123 RXOX  
+category124 : 124 RXX YH
+category125 : 125 TO    
+category126 : 126 TV    
+category127 : 127 TVOD  
+category128 : 128 U     
+category129 : 129 V     
+category130 : 130 VHU   
+category131 : 131 VP    
+category132 : 132 X     
+category133 : 133 XH    
+category134 : 134 XK    
+category135 : 135 XKE   
+category136 : 136 XKK E 
+category137 : 137 XL    
+category138 : 138 Y     
+category139 : 139 YH    
+category140 : 140 YHRE  
+category141 : 141 YHSO  
+category142 : 142 YHYK  
+category143 : 143 YK    
+category144 : 144 YY    
+category145 : 145 ZO    
+category146 : 146 1     
+category147 : 147 10    
+category148 : 148 100   
+category149 : 149 101   
+category150 : 150 102   
+category151 : 151 103   
+category152 : 152 104   
+category153 : 153 105   
+category154 : 154 106   
+category155 : 155 107   
+category156 : 156 108   
+category157 : 157 109   
+category158 : 158 11    
+category159 : 159 110   
+category160 : 160 111   
+category161 : 161 112   
+category162 : 162 115   
+category163 : 163 116   
+category164 : 164 117   
+category165 : 165 118   
+category166 : 166 12    
+category167 : 167 120   
+category168 : 168 122   
+category169 : 169 123   
+category170 : 170 125   
+category171 : 171 126   
+category172 : 172 127   
+category173 : 173 128   
+category174 : 174 129   
+category175 : 175 13    
+category176 : 176 130   
+category177 : 177 131   
+category178 : 178 133   
+category179 : 179 135   
+category180 : 180 136   
+category181 : 181 138   
+category182 : 182 14    
+category183 : 183 142   
+category184 : 184 143   
+category185 : 185 146   
+category186 : 186 15    
+category187 : 187 16    
+category188 : 188 17    
+category189 : 189 177   
+category190 : 190 18    
+category191 : 191 19    
+category192 : 192 2     
+category193 : 193 20    
+category194 : 194 21    
+category195 : 195 22    
+category196 : 196 23    
+category197 : 197 24    
+category198 : 198 25    
+category199 : 199 26    
+category200 : 200 27    
+category201 : 201 28    
+category202 : 202 29    
+category203 : 203 3     
+category204 : 204 30    
+category205 : 205 31    
+category206 : 206 32    
+category207 : 207 33    
+category208 : 208 34    
+category209 : 209 35    
+category210 : 210 36    
+category211 : 211 37    
+category212 : 212 38    
+category213 : 213 39    
+category214 : 214 4     
+category215 : 215 40    
+category216 : 216 41    
+category217 : 217 42    
+category218 : 218 43    
+category219 : 219 44    
+category220 : 220 45    
+category221 : 221 46    
+category222 : 222 47    
+category223 : 223 48    
+category224 : 224 49    
+category225 : 225 5     
+category226 : 226 50    
+category227 : 227 51    
+category228 : 228 52    
+category229 : 229 53    
+category230 : 230 54    
+category231 : 231 55    
+category232 : 232 56    
+category233 : 233 57    
+category234 : 234 58    
+category235 : 235 59    
+category236 : 236 6     
+category237 : 237 60    
+category238 : 238 61    
+category239 : 239 62    
+category240 : 240 63    
+category241 : 241 64    
+category242 : 242 65    
+category243 : 243 66    
+category244 : 244 67    
+category245 : 245 68    
+category246 : 246 69    
+category247 : 247 7     
+category248 : 248 70    
+category249 : 249 71    
+category250 : 250 72    
+category251 : 251 73    
+category252 : 252 74    
+category253 : 253 75    
+category254 : 254 76    
+category255 : 255 77    
+category256 : 256 78    
+category257 : 257 79    
+category258 : 258 8     
+category259 : 259 80    
+category260 : 260 81    
+category261 : 261 82    
+category262 : 262 83    
+category263 : 263 84    
+category264 : 264 85    
+category265 : 265 86    
+category266 : 266 87    
+category267 : 267 88    
+category268 : 268 89    
+category269 : 269 9     
+category270 : 270 90    
+category271 : 271 91    
+category272 : 272 92    
+category273 : 273 93    
+category274 : 274 94    
+category275 : 275 95    
+category276 : 276 96    
+category277 : 277 97    
+category278 : 278 98
+comment     : no data are provided for water areas or Antarctica
+comment     : first column is category number, remaining are codes
+comment     : categories are unique permutations of codes

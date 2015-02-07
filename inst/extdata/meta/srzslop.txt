@@ -1,0 +1,31 @@
+file title  : Staub and Rosenzweig Zobler Soil Unit Surface Slope
+data type   : byte
+file type   : binary
+columns     : 360
+rows        : 180
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 1.0000000
+min. value  : 0
+max. value  : 9
+value units : classed
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 10
+category  0 : 0 Water
+category  1 : Class 1     0-8%
+category  2 : Class 2     8-30%
+category  3 : Class 3     > 30%
+category  4 : Class 4     0-30%
+category  5 : Class 5     0-8%  > 30%
+category  6 : Class 6     8-30% > 30%
+category  7 : Class 7     0-8% 8-30% > 30%
+category  8 : 8 Not Used
+category  9 : 9 Land-Ice

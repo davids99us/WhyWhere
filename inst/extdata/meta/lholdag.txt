@@ -1,0 +1,36 @@
+file title  : Leemans' Holdridge Life Zones Aggregated Classification
+data type   : byte
+file type   : binary
+columns     : 720
+rows        : 360
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 0.5000000
+min. value  : 0
+max. value  : 14
+value units : classed
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 15
+category  0 :  0 Oceans
+category  1 :  1 Tundra       Tundra
+category  2 :  2 Cold Park Cold Parklands
+category  3 :  3 Forest Tu Forest Tundra
+category  4 :  4 Boreal Fo Boreal Forest
+category  5 :  5 Cool Dese Cool Desert
+category  6 :  6 Steppe    Steppe
+category  7 :  7 Temprt Fo Temperate Forest
+category  8 :  8 Hot Deser Hot Desert
+category  9 :  9 Chapparal Chapparal
+category 10 : 10 WmTmp For Warm Temperate Forest
+category 11 : 11 Trop Semi Tropical Semi-Arid
+category 12 : 12 Trop DryF Tropical Dry Forest
+category 13 : 13 Trop Seas Tropical Seasonal Forest
+category 14 : 14 Trop Rain Tropical Rain Forest

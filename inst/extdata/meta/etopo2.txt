@@ -1,0 +1,26 @@
+file title  : etopo2
+data type   : byte
+file type   : binary
+columns     : 10801
+rows        : 5401
+ref. system : lat/long
+ref. units  : deg
+unit dist.  : 1.0000000
+min. X      : -180.0000000
+max. X      : 180.0000000
+min. Y      : -90.0000000
+max. Y      : 90.0000000
+pos'n error : unknown
+resolution  : 0.033333333
+min. value  : -10790
+max. value  : 8593
+value units : metres
+value error : unknown
+flag value  : 255
+flag def'n  : flag value 255 indicates no data
+legend cats : 0
+comment     : from the National Geographic Data Center Version beta2 June 2001
+comment     : Scaled to 256 cats. from max. depth to 0
+comment     : for Marine dataset and from 0 to max. height for Terrestrial
+comment     : dataset by D.Stockwell. 
+
