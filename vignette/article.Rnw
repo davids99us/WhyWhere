@@ -14,12 +14,12 @@
 \begin{abstract}
 This introduction to the R package WhyWhere is a rewritten
 version of  Stockwell,  which
-describes the mathematical basis and the operation of the package. The package extends other useful packages like raster and dismo with methods to fit, plot and test conjunection of fuzzy membership functions although more complex logical expressions are planned.  We show the model is simple and intuitive, efficient to compute, and at least equal to the best alternative approaches.  Thus, it makes a powerful tool to display information about species and their environmental relationships and to assess their significance.
+describes the mathematical basis and philosophy of preidictive and explanatory modelling on big data. The package benifits from recent developments in R like raster which gives access to geograpic operations, dplyr that greatly simplifies the operations on large datasets and also integration with dismo for species distribution modelling.  We show the model is simple and intuitive, efficient to compute, and at equal to the best alternative approaches.  Thus, it makes a powerful tool to utilize large data sets information about species and their environmental relationships and to assess their significance.
 \end{abstract}
 
 \section{Introduction} \label{sec:intro}
 
-This package is concerned with the development of interpretable models of self-directed entities such as biological species, although the approach could potentially be used in the other fields such as consumer and military intelligence, linguistics and control systems.  The technical basis is fuzzy set theory, where instead statmenets that are either true or false, a membership function describes a fuzzy truth value as a function $f: \mathbb{R} \rightarrow to [0,1]$ from a variable $V$ to the real unit interval $[0,1]$.  One must consider membership functions taking values from other spaces such as categories, (also known as factors in R) $N$ or on a space of many variables $V_1 \times V_2 \times ... \times V_n$ where each $V_i$ is an interval in $N$ or $R$. 
+This package is concerned with the development of interpretable models of self-directed entities such as biological species on large datasets, although the approach could potentially be used in the other fields such as consumer and military intelligence, linguistics and control systems.  The inferential basis is fuzzy set theory, where instead statements that are either true or false, a membership function describes a fuzzy truth value as a function $f: \mathbb{R} \rightarrow to [0,1]$ from a variable $V$ to the real unit interval $[0,1]$.  One must consider membership functions taking values from other spaces such as categories, (also known as factors in R) $N$ or on a space of many variables $V_1 \times V_2 \times ... \times V_n$ where each $V_i$ is an interval in $N$ or $R$. 
 
 Experience has shown that a particularly useful way of combining unitary membership functions to resemble the AND, OR and NOT operators of classical logic are Zadeh operators:
 
@@ -28,7 +28,7 @@ OR: $x \lor y = max(f(x),f(y))$, and \\
 NOT: $ \lnot x = (1-f(x))$.  
 
 
-There ave been many approaches to learning fuzzy rules from from given data, and approaches to representation of the discovered rules.  One of the outstanding problems is the trade-off between accuracy and interpretability, or prediction and explanation in the ecological literature.  In particular in this package, ecological theory can motivate our approach, thus satisfying both criteria.  It is the desire to address the problem of explanatory models that motivated t development of WhyWhere -- to describe Why is a species Where? -- without sacrificing predictive accuracy or computational tractability.  
+There have been many approaches to learning fuzzy rules from from given data, and approaches to representation of the discovered rules.  One of the outstanding problems is the trade-off between accuracy and interpretability, or prediction and explanation in the ecological literature.  In particular in this package, ecological theory can motivate our approach, thus satisfying both criteria.  It is the desire to address the problem of explanatory models that motivated t development of WhyWhere -- to describe Why is a species Where? -- without sacrificing predictive accuracy or computational tractability.  
 
 The guide is arranged as follows.  Section 2 describes the main operations, data preparation, developing the membership functions, the operations for building more complex models, and evaluation.  Section 3 compares the performace with the current best methed MaxEnt on a couple of known datasets.
 
@@ -40,59 +40,78 @@ Data are generally obtained as coordinates.  But need in a table with the presen
 
 However, the WhyWhere package adds some functions.  One can prepare a set of rasters with different resolutions but the same crop extent to give a raster pile.  
 
+Here we get the environmental files and read into a raster::RasterStack. 
 
 <<fig=F,echo=T>>=
 source("../R/ww1.R")
 library(maptools)
 library(dismo)
 data(wrld_simpl)
-file <- paste(system.file(package="dismo"), '/ex/bradypus.csv',sep='')
-bradypus <- read.table(file, header=TRUE,sep=",")
 files <- list.files(path=paste(system.file(package="dismo"), 
     '/ex',sep=''), pattern='grd', full.names=TRUE )
+Predictors=stack(files) 
 @
 
-With this we prepare a data as file names.  
-
-Next we are given a species presence, or presence and absence data, this function removes duplicates, and extracts environmental values from the pile, and appends a set of randomly selected points if necessary.
+Here we get the coordinates of the presence points  and read into a dplyr table. 
 
 <<fig=F,echo=T>>=
-Pres=bradypus[,-1]
-ext1=c(range(Pres[,1]),range(Pres[,2]))
-ext=ext1+c(-0.5,0.5,-0.5,0.5)
-Back=cbind(lon=runif(100,ext[1],ext[2]),lat=runif(100,ext[3],ext[4]))
+files <- paste(system.file(package="dismo"), '/ex/bradypus.csv',sep='')
+Pres=as.tbl(read.table(file, header=TRUE,sep=",")) %>% 
+  dplyr::select(-matches("species"))
 @
 
-The data to represent is an array with the first column is the presence absence and the other variables are the environmental variables at that location.  We will shortly have cloud based data access.  
+Next we get the geographic extent of presence and absence data, use it to generate background points at random.  We then bind the two sets to produce onewith presences and psuedo-absences.  
+
+<<fig=F,echo=T>>=
+ext=Pres %>% summarise_each(funs(min,max)) + c(-0.5,0.5,-0.5,0.5)
+Back=data_frame(lon=runif(100,ext[,1],ext[,3]),lat=runif(100,ext[,2],ext[,4]))
+Locations=bind_rows(mutate(Pres,pa=1),mutate(Back,pa=0))
+@
+
+The data to present to the model is an array with the first column is the presence absence and the other variables are the environmental variables at that location.   
+
+<<fig=F,echo=T>>=
+Basis=cbind(Locations,extract(Predictors,as.data.frame(Locations[,1:2])))
+Basis
+@
 
 \subsection{Membership Function}
 
 In ecological niche theory a species tends to be more abundant, or be more likely,  within a range of an environmental variable.  The typical variables used are temperature  and precipitation ranges, although categorical variables such as soil and vegetation type, habitat structure are usually possible.  
 
-The locations where the species occurs can be thought of as a sampling of the environmental space.  That is, while the counts of the environmental values has a distribution $E_i$ for $i$ over the range of the variable, the distribution of the sample where the species is present is $S_i$ over the samevalues $i$.  The most significant variable has the greates difference between these distributions.  The membership function is developed from the ration of counts   $S_i/E_i$. 
+The locations where the species occurs can be thought of as a sampling of the environmental space.  That is, while the counts of the environmental values has a distribution $P_0$ for over the range of the variable, the distribution of the sample where the species is present is $P1$ over the samevalues.  The most significant variable has the greates difference between these distributions.  The membership function is developed from the ration of counts   $P1/P0$. 
 
 
 \begin{figure}[htbp]
 \begin{center}
 <<fig=TRUE,echo=TRUE>>=
 #This one gives best variable var1
-models=lapply(files,function(x) membership(x,Pres,Back,extent=ext))
-plot.membership(models)
+p0=Basis %>% group_by(biome) %>%
+  summarise(p0=n()) %>% mutate(pp0=p0/sum(p0))
+p1=Basis %>% filter(pa==1) %>% group_by(biome) %>%
+  summarise(p1=n()) %>% mutate(pp1=p1/sum(p1))
+p2 = p0 %>% left_join(p1) %>% 
+  mutate(p10=(p1/p0)/sum(p1/p0,na.rm=T)) %>%
+  dplyr::select(biome,pp0,pp1,p10)
+g=ggplot() + 
+  geom_line(aes(biome, p10, colour="blue"), p2) +  
+  geom_line(aes(biome, pp1, colour="green"), p1) +
+  geom_line(aes(biome, pp0, colour="red"), p0)
+print(g)
 @
-\caption{\label{fig:ts} Bradypus data set with response function plotted.}
+\caption{\label{fig:ts} Bradypus data set with response function of bio7 plotted.}
 \end{center}
 \end{figure} 
 
 
-While the classic approach to evaluating the significance is the Chi-squared test, we bin the samples of the environment and the location on the same ranges of values.  In the case of continuous variables there are chosen by R.  In the case of factor variable the categories remain as given. 
+While the classic approach to evaluating the significance is the Chi-squared test, we bin the samples of the environment and the location on the same ranges of values.  In the case of continuous variables there are chosen by R.  In the case of factor variable the categories remain as given. However Chi2 doesnt work in evaluating the multivariate case.  
 
-However Chi2 doesnt work in evaluating the multivariate case.  To evaluate both unitvariate and multivariate combination of environmental variables, we predict the probability of presence on each location and calculate the area under the curve of the reciever operating statistic (AUC for short).  
+Turrns out we dont need it.  We work out the probability for ech of the training data points.  Apply fuzzy method to these vectors and then evaluate them using the AUC.  the probability vector is a simple lookup.
 
-There is a further statistic that is the area under rank correlation or AUC. This arises where a models outputs a figure in the range of zero to one, but a prediction must be made in of 0 or 1. We must select a cuttoff value for the prediction to assign to zero or one.  The AUC is the probability that would give use the optimal accuracy.
-
-A high AUC indicates that sites with high membership are more likely to be areas of presence, and vice versa.  An AUC score of 0.5 is no better than random.  The AUC can be calcualted from.
-
-mean(sample(f(P==1),1000,replace=T)>sample(f(P==0),1000,replace=T),na.rm=T)
+<<fig=F,echo=T>>=
+Basis=cbind(Locations,extract(Predictors,as.data.frame(Locations[,1:2])))
+Basis
+@
 
 
 One may also consider other derivations of the membership function that resemble more closely the probability in Bayesian updating, can be viewed as a relaxation of some aspects of strict Bayesian statistics, that has proven simple and useful where strict Bayes.  
@@ -136,6 +155,15 @@ data=sapply(models,function(x) x$data$prob)
 cause=expression(models[[1]]$data$pa,data,dimensions=2)
 head(cause)
 @
+
+To evaluate both unitvariate and multivariate combination of environmental variables, we predict the probability of presence on each location and calculate the area under the curve of the reciever operating statistic (AUC for short).  
+
+There is a further statistic that is the area under rank correlation or AUC. This arises where a models outputs a figure in the range of zero to one, but a prediction must be made in of 0 or 1. We must select a cuttoff value for the prediction to assign to zero or one.  The AUC is the probability that would give use the optimal accuracy.
+
+A high AUC indicates that sites with high membership are more likely to be areas of presence, and vice versa.  An AUC score of 0.5 is no better than random.  The AUC can be calcualted from.
+
+mean(sample(f(P==1),1000,replace=T)>sample(f(P==0),1000,replace=T),na.rm=T)
+
 
 
 \section{Comparison - Bradypus and MaxEnt}
