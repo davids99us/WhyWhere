@@ -109,8 +109,7 @@ While the classic approach to evaluating the significance is the Chi-squared tes
 Turrns out we dont need it.  We work out the probability for ech of the training data points.  Apply fuzzy method to these vectors and then evaluate them using the AUC.  the probability vector is a simple lookup.
 
 <<fig=F,echo=T>>=
-Basis=cbind(Locations,extract(Predictors,as.data.frame(Locations[,1:2])))
-Basis
+Basis %>% right_join(p3)
 @
 
 
