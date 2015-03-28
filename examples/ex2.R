@@ -1,5 +1,6 @@
 #Get presence points
 file <- paste(system.file(package="dismo"), '/ex/bradypus.csv',sep='')
+print(file)
 Pres <- read.table(file,  header=T,sep=",")
 Pres$species=NULL
 #Get predictors
