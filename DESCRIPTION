@@ -1,10 +1,20 @@
-Package: WhyWhere
+Package: whywhere
 Type: Package
 Title: Species distribution modelling
-Version: 0.1
-Date: 2014-12-14
+Version: 0.0.2
+Date: 2015-04-03
 Author: David Stockwell
 Maintainer: Contact is <d.stockwell@cqu.edu.au>
-Description: This package implements the species modelling algorithm called WhyWhere documented in the article Improving ecological niche models by data mining large environmental datasets for surrogate models" by David R.B. Stockwell in Ecological Modelling Volume 192, Issues 1–2, 15 February 2006, Pages 188–196.
+Description: WhyWhere is a new ecological niche modeling (ENM) algorithm for mapping and explaining the distribution of species. 
+    The algorithm uses robust fuzzy set methods to efficiently sift through large amounts 
+    of data to find the few variables that best predict species occurrence. 
+    The methods are developed to rapidly provide accurate, scalable, and simple ENMs. algorithm using models with few, 
+    typically two, variables. The increase is attributed to access to additional data, particularly remotely sensed monthly versus annual climate averages. 
+    A data mining based approach with transparent access to remote data archives 
+    is a new paradigm for ENM, particularly suited to finding correlates in large databases of fine resolution surfaces. 
+    This package implements the species modelling algorithm called WhyWhere documented in the article 
+    "Improving ecological niche models by data mining large environmental datasets for surrogate models" 
+    by David R.B. Stockwell in Ecological Modelling Volume 192, Issues 1–2, 15 February 2006, Pages 188–196.
 License: Copyrighted
 Encoding: UTF-8
+Imports: data.table, dismo

@@ -1,0 +1,21 @@
+ 
+citHeader("To cite whywhere in publications use:")
+
+citEntry(entry = "Article",
+title = "Improving ecological niche models by data mining large environmental datasets for surrogate models ",
+journal = "Ecological Modelling ",
+volume = "192",
+number = "1–2",
+pages = "188 - 196",
+year = "2006",
+note = "",
+issn = "0304-3800",
+doi = "http://dx.doi.org/10.1016/j.ecolmodel.2005.05.029",
+url = "http://www.sciencedirect.com/science/article/pii/S0304380005002905",
+author = "David R.B. Stockwell",
+keywords = "WhyWhere",
+keywords = "Ecological niche modeling",
+keywords = "Surrogate models",
+keywords = "Data mining",
+keywords = "Remote sensing "
+)
