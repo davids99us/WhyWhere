@@ -9,6 +9,6 @@ files <- list.files(path=paste(system.file(package="dismo"),
 file <- paste(system.file(package="dismo"), '/ex/bradypus.csv',sep='')
 Pres <- read.table(file,  header=T,sep=",")
 Pres$species=NULL
-result=whywhere(Pres,multi=F,files)
-plot.model(result)
-plot.membership(result)
+result=ww(Pres,multi=F,files)
+plot.ww(result)
+plot.dseg(result)

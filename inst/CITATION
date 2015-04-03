@@ -2,6 +2,7 @@
 citHeader("To cite whywhere in publications use:")
 
 citEntry(entry = "Article",
+textVersion = "David R.B. Stockwell, Ecological Modelling Volume 192, Issues 1–2, 15 February 2006, Pages 188–196.",
 title = "Improving ecological niche models by data mining large environmental datasets for surrogate models ",
 journal = "Ecological Modelling ",
 volume = "192",

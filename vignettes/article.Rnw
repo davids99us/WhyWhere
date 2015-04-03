@@ -5,6 +5,7 @@
 \floatplacement{figure}{H}
 \usepackage{lineno}
 \linenumbers
+%\VignetteIndexEntry{Using whywhere}
 \newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}} 
 \title{A prediction algorithm for niche modeling on big environmental data}
 \author{David R.B. Stockwell\footnote{All correspondence to be addressed to the author at david.r.stockwell@cqu.edu.au, Adjunct Researcher at Central Queensland University.}}
@@ -43,16 +44,15 @@ The species distribution models are typically built from two data sources: the c
 
 \begin{figure}[htbp]
 \begin{center}
-<<fig=T,echo=T>>=
+<<fig=T,echo=T,eval=F>>=
 source("../R/ww2.R")
-library(dismo)
 #data(wrld_simpl)
 files <- list.files(path=paste(system.file(package="dismo"),'/ex',sep=''), pattern='grd', full.names=TRUE )
 file <- paste(system.file(package="dismo"), '/ex/bradypus.csv',sep='')
 Pres <- read.table(file,  header=T,sep=",")
 Pres$species=NULL
-result=whywhere(Pres,files)
-plot.model(result)
+result=ww(Pres,files)
+plot.ww(result)
 @
 \caption{\label{fig1} \pkg{WhyWhere} predicted distribution of the Bradypus data set.}
 \end{center}
@@ -80,8 +80,8 @@ Figure~\ref{fig2} shows a table output for the highest rated variable in the Bra
 
 \begin{figure}[htbp]
 \begin{center}
-<<fig=T,echo=T>>=
-plot.membership(result)
+<<fig=T,echo=T,eval=F>>=
+plot.dseg(result)
 @
 \caption{\label{fig2} Response function bio6 plotted.}
 \end{center}
@@ -186,5 +186,5 @@ The R package \pkg{WhyWhere} is a useful packages to fit, plot and test empirica
 
 
 \bibliographystyle{plain}
-\bibliography{../../library.bib}
+\bibliography{../../library}
 \end{document}

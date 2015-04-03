@@ -1,5 +1,6 @@
 library(data.table)
 library(dismo)
+library(raster)
 
 # Get Bradypust test from dismo
 file <- paste(system.file(package = "dismo"), "/ex/bradypus.csv", sep = "")
@@ -9,14 +10,28 @@ Bradypus_files <- list.files(path = paste(system.file(package = "dismo"), "/ex",
     sep = ""), pattern = "grd", full.names = TRUE)
 # options(warn=-1)
 
-# Retunnnth AUX given the pa and the prob
+ 
+#' auc
+#' auc runs the whywhere Area Under Curve function
+#' @param p0 vector of probabilities
+#' @param pa vector of 1's and 0's for presence and absence
+#' @return value AUC 
 auc <- function(p0, pa) {
     mean(sample(p0[which(pa == 1)], 1000, replace = T) > sample(p0[which(pa != 1)], 
         1000, replace = T), na.rm = T)
 }
 
+#' range01
+#' range01 adjusts range to equal area 
+#' @param x vector 
+#' @return scaled vector 
 range01 <- function(x) x/sum(x, na.rm = T)
 
+#' getraster
+#' getraste gets a raster using raster package, and added 
+#' global range for pgm files 
+#' @param file file name 
+#' @return raster 
 getraster <- function(file) {
     ras = raster(file)
     # In the case is one of my pgm files with no geo information
@@ -29,22 +44,17 @@ getraster <- function(file) {
     ras
 }
 
-#' membership
+#' dseg
 #' 
-#' membership is used to develop an environmental model from known locations, 
-#' and use them to predict further occurrences
+#' dseg generates the ww model - a segmented distribution 
 #' 
-#' The main application is species niche modelling.  
-#' The algorithm implemented here claims to be both more accurate and 
-#' more informative than other methods (hence the name 'WhyWhere').
-#'
 #' @param files A single environmental file
 #' @param ext a geographic extent 
 #' @param Basis Presence locations and absence locations
 #' @param pa a vector of zeros and ones for presence and absence locations
 #' @return A model object membership 
 
-membership <- function(file, ext, Basis, pa) {
+dseg <- function(file, ext, Basis, pa) {
     r = getraster(file)
     ras = crop(r, ext)
     # Table of data
@@ -54,20 +64,20 @@ membership <- function(file, ext, Basis, pa) {
     # Determine factors - if quantiles doesnt work do even breaks
     # print(paste('Doing',names(ras)))
     quants = quantile(e$values, seq(0, 1, 1/nbreaks))
-    factors = try(cut(e$values, quants))
+    factors = try(cut(e$values, quants), silent=TRUE)
     # If quantiles dont work set values as factors
     if (class(factors) == "try-error") {
-        e[, `:=`(factors, as.factor(values))]
-    } else e[, `:=`(factors, factors)]
+        e[, factors:=as.factor(values)]
+    } else e[, factors:=factors]
     # if (class(factors) == 'try-error') factors=try(cut(e$values,nbreaks)) if
     # (class(factors) == 'try-error') return(NULL)
     setkey(e, factors)
     # Construct lookup table for probs on factors
     lookup = data.table(factors = levels(e$factors), levels = 1:nlevels(e$factors))
     setkey(lookup, factors)
-    lookup[, `:=`(g1, e[, table(factors)])]
-    lookup[, `:=`(g2, e[pa == 1, table(factors)])]
-    lookup[, `:=`(prob, as.numeric(round(g2/g1, 2)))]
+    lookup[, g1:=e[, table(factors)]]
+    lookup[, g2:=e[pa == 1, table(factors)]]
+    lookup[, prob:=as.numeric(round(g2/g1, 2))]
     lookup$prob[is.nan(lookup$prob)] <- 0
     setorder(lookup, factors)
     e = lookup[e]
@@ -89,7 +99,7 @@ membership <- function(file, ext, Basis, pa) {
 #' @return A raster of probability
 
 
-predict.membership <- function(obj) {
+predict.dseg <- function(obj) {
     t = obj$lookup$factors
     n1 = as.numeric(unique(unlist(strsplit(substr(t, 2, nchar(t) - 1), ","))))
     m = n1[order(n1)]
@@ -98,44 +108,49 @@ predict.membership <- function(obj) {
     s = subs(ras, id)
 }
 
-#' whywhere
+#' ww
 #' 
-#' whywhere is used to develop an environmental model from known locations, 
-#' and use them to predict further occurrences
-#' 
+#' ww is used to develop an environmental model from known locations, 
+#' and use them to predict further occurrences.  
 #' The main application is species niche modelling.  
-#' The algorithm implemented here claims to be both more accurate and 
-#' more informative than other methods (hence the name 'WhyWhere').
 #'
 #' @param Pres A 2 column data.frame of known locations
 #' @param files The environmental files for raster 
+#' @return result A frame of results
+#' @examples
+#' result=ww(Bradypus_Pres,Bradypus_files)
+#' print(result)
+
+
+
+ww <- function(Pres, files) UseMethod("ww")
+
+ww.default <- function(x, y)
+  {
+    #x <- as.matrix(x)
+    #y <- as.numeric(y)
+    est <- model.ww(x, y)
+    #est$fitted.values <- as.vector(x %*% est$coefficients)
+    #est$residuals <- y - est$fitted.values
+    #est$call <- match.call()
+    class(est) <- "ww"
+    est
+  }
+
+
+#' model.ww
+#' model.ww develops the model 
+#' @param Pres A 2 column data.frame of known locations
+#' @param files The environmental files for raster  
 #' @param multi multiple dimensions
 #' @param limit minimum for entry into results
 #' @param beam number of entries to keep in table
 #' @param e size of border around presence points
 #' @param plot logical 
-#' @return result A frame of results
+#' @return scaled vector 
 
 
-whywhere <- function(x, ...) UseMethod("whywhere")
-
-whywhere.default <- function(x, y, ...)
-  {
-    #x <- as.matrix(x)
-    #y <- as.numeric(y)
-    est <- model.whywhere(x, y,...)
-    #est$fitted.values <- as.vector(x %*% est$coefficients)
-    #est$residuals <- y - est$fitted.values
-    #est$call <- match.call()
-    class(est) <- "whywhere"
-    est
-  }
-
-
-
-
-
-model.whywhere <- function(Pres, files, multi=F,limit=0, beam=5,e=0.5,plot=FALSE,...) {
+model.ww <- function(Pres, files, multi=F,limit=0, beam=5,e=0.5,plot=FALSE) {
     ext = as.numeric(sapply(Pres, range)) + c(-e, e, -e, e)
     Back = data.frame(lon = runif(1000, ext[1], ext[2]), lat = runif(1000, ext[3], 
         ext[4]))
@@ -143,7 +158,7 @@ model.whywhere <- function(Pres, files, multi=F,limit=0, beam=5,e=0.5,plot=FALSE
     Basis = rbind(Pres, Back)
     result = data.table(name = "limit", AUC = limit, file = NA)
     for (i in files) {
-        a = membership(i, ext, Basis, pa)
+        a = dseg(i, ext, Basis, pa)
         # browser() membership failed test
         if (is.null(a)) {
             print(paste("Skipping: membership failed"))
@@ -177,20 +192,31 @@ model.whywhere <- function(Pres, files, multi=F,limit=0, beam=5,e=0.5,plot=FALSE
                 result = result[1:beam, ]
         }
     }
-    a = membership(result[1]$file, ext, Basis, pa)
+    a = dseg(result[1]$file, ext, Basis, pa)
     a$result = result
     a
 }
 
-plot.model <- function(o) {
-    layer = predict.membership(o)
+#' plot
+#' 
+#' plot plots the ww model 
+#' @param o is a model object from whywhere
+
+plot.ww <- function(o) {
+    layer = predict.dseg(o)
     # browser()
-    plot(layer, main = paste(o$name, " AUC=", o$model$AUC, sep = ""))
+    r=plot(layer)
+    title(paste(o$name, " AUC=", o$AUC, sep = ""))
     Pres = o$data[pa == 1, .(lon, lat)]
     points(Pres, col = "blue")
 }
 
-plot.membership <- function(o) {
+#' plot.dseg
+#' 
+#' plot.dseg plots the segregated model
+#' @param o is a model object from whywhere
+
+plot.dseg <- function(o) {
     o$lookup[, plot(levels, prob, xaxt = "n", xlab = "", lwd = 10, lend = "square", 
         ylab = "Response", type = "h", col = "gray")]
     g1 = as.numeric(o$lookup$g1)

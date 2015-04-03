@@ -1,0 +1,39 @@
+\begin{thebibliography}{1}
+
+\bibitem{Dowle2014}
+M~Dowle, T~Short, S~Lianoglou, and A~Srinivasan.
+\newblock data.table: Extension of data.frame.
+\newblock 10 2014.
+
+\bibitem{Heckbert82}
+Paul Heckbert.
+\newblock {Color image quantization for frame buffer display}.
+\newblock In {\em SIGGRAPH '82: Proceedings of the 9th annual conference on
+  Computer graphics and interactive techniques}, pages 297--307, New York, NY,
+  USA, 1982. ACM Press.
+
+\bibitem{dismo}
+R.J. Hijmans, S.~Phillips, J.~Leathwick, and J.~Elith.
+\newblock dismo: Species distribution modeling with r.
+\newblock 2011.
+
+\bibitem{Stockwell:1999yg}
+D~Stockwell and D~Peters.
+\newblock {The GARP modelling system: problems and solutions to automated
+  spatial prediction}.
+\newblock {\em International Journal Of Geographical Information Science},
+  13(2):143--158, 1999.
+
+\bibitem{Stockwell:2006xt}
+David R~B Stockwell.
+\newblock {Improving ecological niche models by data mining large environmental
+  datasets for surrogate models}.
+\newblock {\em Ecological Modelling}, 192:188--196, 2006.
+
+\bibitem{Etten2012}
+Robert J. Hijmans \&~Jacob van Etten.
+\newblock raster: Geographic analysis and modeling with raster data.
+\newblock 2012.
+\newblock R package version 2.0-12.
+
+\end{thebibliography}

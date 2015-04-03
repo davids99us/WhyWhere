@@ -13,5 +13,6 @@ Tfiles <- list.files(path="/home/davids99us/Dropbox/R/Temp/WhyWhere/Terrestrial"
 #files=c(files,Tfiles)
 #files="/home/davids99us/Dropbox/R/Temp/WhyWhere/Terrestrial/a00sd1.33.pgm"
 
-result=whywhere(Pres,files)
-print(result)
+result=ww(Pres,files)
+plot(result)
+#print(result)
