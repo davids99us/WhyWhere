@@ -1,0 +1,66 @@
+Hi David
+
+I have now looked the draft paper. The algorithm and results have some merit but it should be improved if we want it to be acceptable for Elsevier’s Big Data Research journal
+http://www.journals.elsevier.com/big-data-research/
+or Springer’s Journal of Big Data, http://www.journalofbigdata.com/
+
+The presentation needs to be significantly improved. The use of standard sections as follows would improve readability and paper quality.
+Abstract
+Introduction
+Background/Related Work
+Preliminaries
+Proposed Algorithm
+Experiments
+Comparative Analysis
+Conclusions
+
+Improve the following things:
+Abstract
+We describe a novel algorithm should be We propose a novel algorithm “mention name because you mention Core3 in next sentence”
+Core3 algorithby should be Core3 algorithm by
+Why name Core3? Name should be relevant to what algorithm is doing
+
+Section 1
+“We want a tool that satisfies the following:”  and 8 dot points could be better presented.
+
+Page 2
+The rest of the note should be The rest of the paper
+Section numbers are incorrect. Section 4 is Conclusion section …
+
+Heading Operational Criteria is inappropriate heading , Background or Preliminaries - more appropriate
+
+Section 2.1 Core3 Algorithm should be Proposed Core3 Algorithm
+
+2.2 Simple Example section doesn’t make sense as it presents experiments. It would be good to have all experiments in one section.
+
+Lines above Figure 1 could be put in a box and numbered as a Figure. What are those lines should be explained briefly.
+
+Figure 3 illustrates the evolution should be changed to Figure 2 illustrates the evolution
+
+
+Page 17
+it performance should be its performance
+
+In conclusion section, the performance comparison based on presented experiments for Core3 with other 3 mentioned algorithms is not clear.
+
+Page 18
+omproved the article. Should be improved the article.
+
+
+Important things:
+-Present algorithm clearly in a box, use pseudocode or descriptive steps.
+-Present/describe clearly the criteria for performance measurement of the purposed algorithm.
+-Conduct/Re-organise the experiments and show the performance for all algorithms (BinSeg, PELT, SegNeigh, Proposed Core3) using the above criteria.
+-List performances for all algorithms in a single Table and cite the table in discussion & conclusion sections.
+-If you want to show that Core3 is faster you need to show it using big O notation (prove it showing all steps) and show timing for each experiment and for each algorithm.
+-You need more references/literature review for a good journal paper.
+
+-Include following affiliation in your paper
+Centre for Intelligent and Networked Systems
+Central Queensland University
+
+Do you want me to ask one of the students/postdoc to help you in preparing this paper?
+
+I am attaching one paper from one of the above mentioned journals. There is also a conference on Big Data. I will forward it to you ...
+
+Regards, Brijesh

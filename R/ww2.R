@@ -117,7 +117,25 @@ predict.membership <- function(obj) {
 #' @return result A frame of results
 
 
-whywhere <- function(Pres, files, multi = F, limit = 0, beam = 5, e = 0.5, plot = FALSE) {
+whywhere <- function(x, ...) UseMethod("whywhere")
+
+whywhere.default <- function(x, y, ...)
+  {
+    #x <- as.matrix(x)
+    #y <- as.numeric(y)
+    est <- model.whywhere(x, y,...)
+    #est$fitted.values <- as.vector(x %*% est$coefficients)
+    #est$residuals <- y - est$fitted.values
+    #est$call <- match.call()
+    class(est) <- "whywhere"
+    est
+  }
+
+
+
+
+
+model.whywhere <- function(Pres, files, multi=F,limit=0, beam=5,e=0.5,plot=FALSE,...) {
     ext = as.numeric(sapply(Pres, range)) + c(-e, e, -e, e)
     Back = data.frame(lon = runif(1000, ext[1], ext[2]), lat = runif(1000, ext[3], 
         ext[4]))
