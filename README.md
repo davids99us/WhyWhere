@@ -16,7 +16,8 @@ Global data file called global.tar.kz can be downloaded by ftp from landshape.or
     
 A vignette is available in the vignette directory.
 
-Example files are located in the examples directory.
+See an example that tests the package by running test().
+
 
 ##NEW FEATURES
 

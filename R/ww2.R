@@ -8,7 +8,7 @@ library(gridExtra)
 
 # Get Bradypust test from dismo
 file <- paste(system.file(package = "dismo"), "/ex/bradypus.csv", sep = "")
-Bradypus_Pres <- read.table(file, header = T, sep = ",")
+Bradypus_Pres <- fread(file, header = T, sep = ",")
 Bradypus_Pres$species = NULL
 Bradypus_files <- list.files(path = paste(system.file(package = "dismo"), "/ex", 
     sep = ""), pattern = "grd", full.names = TRUE)
