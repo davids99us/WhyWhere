@@ -17,4 +17,6 @@ Description: WhyWhere is a new ecological niche modeling (ENM) algorithm for map
     by David R.B. Stockwell in Ecological Modelling Volume 192, Issues 1–2, 15 February 2006, Pages 188–196.
 License: GPL-2
 Encoding: UTF-8
-Imports: data.table, dismo, raster
+Imports: data.table, dismo, raster, ggplot2, gridExtra, rgdal
+Suggests: testthat
+
