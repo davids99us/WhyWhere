@@ -2,9 +2,13 @@ library(data.table)
 library(dismo)
 library(raster)
 library(rgdal)
-library(ggplot2)
 library(gridExtra)
 library(discretization)
+library(pROC)
+library(ROCR)
+library(xtable)
+#library(ncdf)
+verbose.flag=0
 
 # Get Bradypust test from dismo
 file <- paste(system.file(package = "dismo"), "/ex/bradypus.csv", sep = "")
@@ -36,6 +40,7 @@ getraster <- function(file,ext) {
         xmax(ras) = 180
         ymin(ras) = -90
         ymax(ras) = 90
+        #ras=subs(ras,data.frame(0,NA))
     }
     if (length(ext) == 4) {
     if (ext[1]<xmin(ras) || ext[2]>xmax(ras)) print("Warning X out of range")
@@ -50,32 +55,66 @@ getraster <- function(file,ext) {
 #' @param e the pa values table 
 #' @return  lookup table
 
-getlookup<-function(e) {
-lookup = data.table(factors = levels(e$factors), levels = 1:nlevels(e$factors))
-setkey(lookup, levels)
-lookup[, g1:=e[pa==0, table(factors)/.N]]
-lookup[, g1:=e[, table(factors)/.N]]
-lookup[, g2:=e[pa == 1, table(factors)/.N]]
-lookup[, odds:=as.numeric(g2/g1)]
-#lookup$odds[is.nan(lookup$odds)] <- 0
-lookup[, prob:=odds/(1+odds)]
-#lookup[, prob:=log(1/(1+exp(-odds)))]
-#lookup[,prob:=range0S(cond*g2)]
-#print(lookup)
+getlookup<-function(e,ras,cuts) {
 #browser()
+  lookup = data.table(factors = levels(e$factors), levels = 1:nlevels(e$factors))
+setkey(lookup, levels)
+# distribution of survey
+lookup[, G:=e[pa==0, as.numeric(table(factors))/.N]]
+# distribution of cells - dies for large rasters
+browser()
+if (FALSE) {
+  B=table(as.vector(cut(ras,cuts)))
+  B=B/sum(B)
+  d=data.table(levels=as.numeric(names(B)),B)
+  setkey(d,levels)
+  lookup=d[lookup]
+  lookup[, B:=as.numeric(V2)]
+}
+#lookup[is.na(get(B)),B:=0,with=FALSE]
+#lookup[, B:=e[, as.numeric(table(factors))/.N]]
+#distribution of occurrances
+lookup[, S:=e[pa == 1, as.numeric(table(factors))/.N]]
 lookup
 }
 
-myGLM<-function(e) {
-  gm1<-glm(pa~values+I(values^2)+I(values^3),data=e, family=binomial(link="logit"))
-  ev1<-evaluate(e[pa==1],e,gm1)
-  round(slot(ev1,"auc"),3)
+#' getlookup
+#' gets the lookup table with probability in each range 
+#' @param e the pa values table 
+#' @return  lookup table
+
+getlookup1<-function(e,ras,type) {
+  if(type=="po") {
+    lookup=na.omit(as.data.table(freq(ras)))
+    temp=e[,.N,by=value]
+  }
+  if (type=="pa") {
+    lookup=e[,.N,by=value]
+    setnames(lookup,"N","count")
+    temp=e[pa==1,.N,by=value]
+  }
+  setkey(lookup,value);setkey(temp,value)
+  lookup=temp[lookup]
+  lookup[is.na(N),N:=0]
+  lookup
 }
 
 
-#' dseg
+odds<-function(S,G) {
+  G[is.na(G)]<-0
+  S[is.na(S)]<-0
+  S=S/sum(S);G=G/sum(G)
+  S=replace(S,S==1,0.99)
+  G=replace(G,G==0,0.01)
+  (S*(1-G))/(G*(1-S))
+}
+
+
+
+
+#' dseg1
 #' 
-#' dseg generates the ww model - a segmented distribution 
+#' dseg1 generates the ww model - a segmented distribution 
 #' 
 #' @param files A single environmental file
 #' @param ext a geographic extent 
@@ -84,72 +123,83 @@ myGLM<-function(e) {
 #' @param min.breaks minimum unique elements
 #' @return A model object membership 
 
-dseg <- function(file, ext, Basis, categorical=FALSE, 
-                 plot=FALSE,min.res=100,min.breaks=3, 
-                 type=4, segment="quantile", unique=1) {
-  pa=Basis$pa
-  Basis=Basis[,.(lon,lat)]
+dseg1 <- function(file, ext, data, type="po",remove.val=NA,
+                  min.res=100,min.breaks=3,
+                  max.breaks=10,silent=FALSE,
+                  segment="quantile", unique=1) {
   ras = getraster(file,ext)
-  if (substr(basename(file),1,4)=="fact") categorical=TRUE
-  # Table of data - what about NA's
-  e = data.table(pa, Basis, values = extract(ras, Basis))
-  #print(paste(length(unique(e$values)),file))
-  #browser()
-  if (length(unique(e[pa==1]$values))<unique | length(unique(e[pa==0]$values))<unique ) {
-    print(paste("Insufficient unique points in",file))
-    return(NULL)
-  }
-  #Run GLM for comparison
-  gm1<-glm(pa~values+I(values^2)+I(values^3),data=e, family=binomial(link="logit"))
-  #gm1<-glm(pa~poly(values,3),data=e, family=binomial(link="logit"))
-  ev1<-evaluate(e[pa==1],e,gm1)
-  BAUC=round(slot(ev1,"auc"),3)
-  
-  #browser()
-  cuts=switch(segment,
-    entropy={
-     r=range(e$values)
-     c(r[1],cutPoints(e$values,e$pa),r[2])
-    },
-    quantile={
-      # Values into factor levels using Freedman-Diaconis rule
-      nbreaks = min(length(unique(e$values)), floor((length(e$values))^(1/3)))
-      stats=data.table(name=basename(file),XN=dim(ras)[1],YN=dim(ras)[2],breaks=nbreaks)
-      stats[,N:=(XN*YN< min.res)][,B:=(nbreaks<min.breaks)]
-      if (stats$N | stats$B) return(NULL)
-        # else print(stats)
-      quants = quantile(na.omit(e[pa==0,values]), seq(0, 1, 1/nbreaks), type=type)
-    },
-    even={
-      cuts = min(length(unique(e$values)), floor((length(e$values))^(1/3)))
-      #browser()
-    },
-    categorical=as.factor(e$values))
-    #browser()
-    factors = try(cut(e$values, cuts), silent=TRUE)
-    # If quantiles dont work set values as factors#
-    # Usually because too highly skewd - 
-    # then breaks are not unique
-    if (class(factors) == "try-error") {
-    #e[, factors:=as.factor(e$values)]
-    e[, factors:=cut(e$values,c(min(e$values)-1,unique(e$values)))]
-    categorical=TRUE
-    } else e[, factors:=factors]
-  setkey(e, factors)
-  # Construct lookup table for probs on factors
-  lookup=getlookup(e)
- 
-  #setorder(lookup, factors)
-  e = lookup[e]
-  auc = auc(e)
+  data[,value:=extract(ras,cbind(lon,lat))]
+  counts=getlookup1(data,ras,type)
    
-  o = list(name = names(ras), WW = auc, data = e, raster = ras, 
-           lookup = lookup, categorical=categorical, GLM=BAUC, glm=gm1)
-  if (plot) {
-    plot.ww(o)
-    browser()
+  #Delete zero row for my pgm files
+  if (!is.na(remove.val)) counts=counts[value!=remove.val]
+  #browser()
+  if (sum(counts$N)==0) return(NULL)
+  #Not enought rows
+  if (dim(counts)[1]<2) return(NULL)
+  #browser()
+  #nbreaks = min(max.breaks,dim(counts)[1],floor((length(data$values))^(1/3)))
+  nbreaks=10
+  freq=1:10/10
+  stats=data.table(file=basename(file),XN=dim(ras)[1],
+                   YN=dim(ras)[2],breaks=nbreaks)
+  stats[,Rbad:=(XN*YN< min.res)][,Bbad:=(nbreaks<min.breaks)][,Ubad:=(dim(counts)[1]<2)]
+  verbose(head(stats),"stats")
+   
+  if (stats$Rbad | stats$Bbad | stats$Ubad ) return(NULL)
+  
+  bin.size=sum(counts$count)/nbreaks
+  r=0;ID=c();j=1;cuts=c(counts$value[1]-1)
+  for (i in counts$value) {
+    if (r<bin.size) r=r+counts[value==i,count]
+    else {r=0;j=j+1;cuts=c(cuts,i)}
+    ID=c(ID,j)
   }
+  if (length(cuts)<2) return(NULL)
+  counts[,ID:=ID]
+  width=diff(c(cuts,max(counts$value)))
+  lookup <- counts[, lapply(.SD,sum), by=ID]
+  lookup[,cuts:=cuts]
+  lookup[,width:=width]
+  lookup[, odds:=odds(N,count)]
+  lookup[, prob:=odds/(1+odds)]
+  verbose(lookup,"lookup")
+    
+  #auc=entropy(lookup$prob)
+  if (length(lookup$N)<2 | length(lookup$count)<2) browser()
+  #if (file=="/home/davids99us/data/Terrestrial/a00an1.30.pgm") browser()
+   
+  auc=chisq.test(lookup$N,p=lookup$count,rescale.p=TRUE)$statistic
+  o = list(name = names(ras), WW = auc, data = data, raster = ras, 
+           lookup = lookup)
   o
+}
+
+
+
+goglm<-function(data,files,dirname) {
+  Pfiles=paste(path,files,sep="/")
+  g=c()
+for (i in Pfiles)  {
+  #Run GLM for comparison
+  e=presample(data,i)
+  g=c(g,myglm(e)$auc)
+}
+data.table(file=files,GLM=g)
+}
+
+myglm<-function(e) {
+#if (dim(e)[2]==5) {
+gm<-glm(pa~value+I(value^2)+I(value^3),data=e, 
+        family=binomial(link="logit"))
+#gm1<-glm(pa~poly(values,3),data=e, family=binomial(link="logit"))
+#} else if (dim(e)[2]==6) {
+#  e=na.omit(e)
+#gm<-glm(pa~poly(values,3)+poly(V2,3),data=e, family=binomial(link="logit"))
+#}
+ev<-evaluate(e[pa==1],e,gm)
+auc=round(slot(ev,"auc"),3)
+list(model=gm,auc=auc,result=ev)
 }
 
 
@@ -170,9 +220,11 @@ factor2breaks<-function(x) {
 }
 
 predict.dseg <- function(obj) {
-     n1 = factor2breaks(obj$lookup$factors)
-     ras = cut(obj$ras, n1)
-     id = data.frame(cbind(1:(nrow(obj$lookup)),obj$lookup$prob))
+  #browser()
+     #n1 = factor2breaks(obj$lookup$factors)
+     ras = cut(obj$ras, obj$lookup$cuts)
+     id = data.frame(cbind(obj$lookup$ID,obj$lookup$prob))
+     #browser()
   s = subs(ras, id)
 }
 
@@ -184,6 +236,7 @@ predict.dseg <- function(obj) {
 #'
 #' @param Pres A 2 column data.frame of known locations
 #' @param files The environmental files for raster 
+#' @param multi 1 max numer of conjuncts
 #' @return result A frame of results
 #' @examples
 #' result=ww(Bradypus_Pres,Bradypus_files)
@@ -207,87 +260,117 @@ ww.default <- function(x, y, ...)
 
 
 
-#' model.ww
-#' model.ww develops the model 
-#' @param Pres A 2 column data.frame of known locations
+#' presample
+#' presample prepares data for GLM  
+#' @param Pres A 2 column data known locations
 #' @param files The environmental files for raster  
-#' @param multi multiple dimensions
-#' @param limit minimum for entry into results
-#' @param beam number of entries to keep in table
-#' @param extent range of plot.  May be vector length 4 to specify.
 #' @param trim "crop" around presence points  
-#' @param plot logical 
 #' @param e margin for trim
-#' @return scaled vector 
+#' @return data table of locations, pa and values 
 
-presample<-function(Pres, mask=NA,trim=TRUE,e=1,split=FALSE) {
+presample<-function(data, file=NA,trim=TRUE,e=1,extent=NA) {
   #Get the mask and extent
-  if (is.na(mask)) mask=files[1]
-  ras=getraster(mask,NA)
-  if (length(extent) == 4) ext=extent
-  else ext=c(xmin(ras),xmax(ras),ymin(ras),ymax(ras))
-  if (trim) ext=as.numeric(sapply(Pres, range)) + c(-e, e, -e, e)
-  #Get data
-  ras=crop(ras,ext)
+  if (trim && is.na(extent)) extent=as.numeric(sapply(data[,1:2,with=FALSE], range)) + c(-e, e, -e, e)
+  #Get absence points 
+  ras=getraster(file[1],extent)
   back=data.table(pa=0,randomPoints(ras,1000))
-  colnames(back)=c("pa","lon","lat")
-  #if (split) pres=cbind(pa=1,Pres[sample(.N,.N/2,replace=TRUE)])
-  #else pres=cbind(pa=1,Pres[sample(.N,1000,replace=TRUE)])
-  pres=cbind(pa=1,Pres)
-  #Combine
+  setnames(back,c("pa","x","y"),c("pa","lon","lat"))
+  pres=data.table(pa=1,lon=data$lon,lat=data$lat)
   data=rbind(pres,back)
-  list(data=data,extent=ext)
+  data[,value:=extract(ras,cbind(lon,lat))]
+    #data[,eval(paste("V",j,sep="")):=extract(ras,cbind(lon,lat))]
+  data[,ID:=.I]
+  data
 }
 
-
-model.ww <- function(set, files, multi=FALSE,plot=FALSE, limit=0, segment="quantile") {
-  result = data.table(name = "limit", WW = limit, GLM=limit,file = NA)
-  #print(segment)
+verbose<-function(data,text,v=NA) {
+  if (is.na(v)) v=verbose.flag
+  if (v==0) return()
   #browser()
+  out=switch(class(data)[1],
+  data.table= {
+    #extent=as.numeric(sapply(data, range))
+    #paste(names(data),extent)
+    data
+  },
+  RasterLayer={
+    h=hist(data,breaks=length(unique(data)),plot=FALSE)$density
+    if(v<3) length(h) else (paste(h))
+  },
+  numeric={
+    paste(data)
+  },
+  integer={
+    paste(data)
+  },
+  list={
+    paste(list)
+  },
+  "class not implemented yet")
+  print(text)
+  print(out)
+}
+
+model.ww <- function(data, files, dirname=".", multi=1,plot=FALSE, 
+                     limit=0, type="po",remove.val=NA,
+                     segment="quantile", trim=TRUE, e=1) {
+  result = data.table()
+  if (trim) extent=as.numeric(c(range(data$lon),range(data$lat))) + c(-e, e, -e, e)
+  else extent=NA
+  #print(extent)
+  #Determine the type of analysis from data
+  #type.code=c("a","po","pa")
+  #if (is.na(type)) type=type.code[dim(data)[2]]
+   
   #Go through all files
   for (i in files) {
-    a = dseg(i, set$extent, set$data, plot=plot, segment=segment)
+    if (verbose.flag>0) print(i)
+    filename=paste(dirname,i,sep="/")
+    a = dseg1(filename, extent, data, remove.val=remove.val,type=type)
     if (is.null(a)) {
       print(paste("Skipping",basename(i)))
     } else {
-    result=rbind(result,list(name = a$name, WW=a$WW, GLM=a$GLM, file = i))
+      
+    result=rbind(result,list(file=i,WW=a$WW))
     setorder(result, -WW)
+    
     #print(paste(a$name,a$AUC))
-    if (a$name == result[1]$name) {
+    if (i == result[1]$file) {
       topdata = a$data #current is best - save pa probs
       if (plot) {
         plot.ww(a)
         #browser()
       }
-      #Do the multi variable option
-    } else if (multi) {
+      #Do the multi variable option if less conjunct than multi
+    } else if (multi > length(strsplit(result[1]$file,'&')[[1]])) {
       p = pmin(a$data$prob, topdata$prob)
-      #print(paste(length(a$data$prob), length(topdata$prob), length(p)))
+      #p = a$data$prob * topdata$prob
       auc = auc(data.table(pa=a$data$pa, prob=p))
-      #browser()
-      #Do the glm
-      y=na.omit(data.table(pa=a$data$pa, y1=topdata$values, y2=a$data$values))
-      #print(file) 
-      #print(nrow(y))
-      gm2<-glm(pa~poly(y1,3)+poly(y2,3),data=y, family=binomial(link="logit"))
-      ev2<-evaluate(y[pa==1],y,gm2)
-      glmauc=round(slot(ev2,"auc"),3)
-      result=rbind(result,
-                 list(name=paste(result[1]$name,".", a$name, sep = ""),
-                      WW=auc,GLM=glmauc,file = i))
+      r0=list(file=paste(result[1]$file,"&",i,sep =""),WW=auc)
+      result=rbind(result,r0)
       setorder(result, -WW)
     }}}
   
+  #End of main loop p - get result again
+  verbose(head(result,5),"result")
+  #browser()
   #print(result)
-  if (nrow(result)==1) {
+  if (nrow(result)==0) {
     print("No good files found - returning")
     return(NULL)
   }
-  a = dseg(result[1]$file, set$ext, set$data)
+  exp=strsplit(result[1]$file,"&")
+  filename=paste(dirname,exp[[1]][1],sep="/")
+  a = dseg1(filename, extent, data,remove.val=remove.val,type=type)
   a$result = result
-  setkey(a$lookup,levels)
+  a$dirname=dirname
+  #setkey(a$lookup,levels)
+  #list(result,dirname,extent,ras) may not need dseg here / do multi
+  #browser()
   a
 }
+
+
 
 
 
@@ -297,113 +380,32 @@ model.ww <- function(set, files, multi=FALSE,plot=FALSE, limit=0, segment="quant
 #' plot plots the ww model 
 #' @param o is a model object from whywhere
 
-plot.ww <- function(o,legend="none") {
-  a=b=c=d=0
-  p0=plot.map(o$ras)+ theme(legend.position=legend,
-                            axis.title.x = element_blank(),
-                            axis.title.y = element_blank(),
-                            axis.text.x = element_blank(), 
-                            axis.text.y = element_blank(),
-                            axis.ticks.x = element_blank(),
-                            axis.ticks.y = element_blank(),
-                            plot.margin = unit(c(a,b,c, d),"cm"))
-  
-  p1=plot.dseg(o) + theme(legend.position=legend)
-  #                       axis.text.x=element_blank(),
-  #                       axis.ticks.x=element_blank(),
-  #                       axis.ticks.y = element_blank(),
-  #                       plot.margin = unit(c(a,b,c, d),"cm"))
+plot.ww1<-function(o) {
+  par(mfcol=c(2,2), mar=c(2, 2, 2, 2) + 0.1)
+  plot(o$ras,main=paste("Variable",o$name))
+  plot.dseg(o)
   l = predict.dseg(o)
-  Pres = o$data[pa == 1, .(lon, lat)]
-  
-  p2=plot.map(l,Pres) + theme(legend.position=legend,
-                              axis.title.x = element_blank(),
-                              axis.title.y = element_blank(),
-                              axis.text.x = element_blank(), 
-                              axis.text.y = element_blank(),
-                              axis.ticks.x = element_blank(),
-                              axis.ticks.y = element_blank(),
-                              plot.margin = unit(c(a,b,c, d),"cm"))
-  
-  
-  text2=data.table(Value=c(o$name,o$WW,o$GLM))
-  rownames(text2)=c("Variable","WW","GLM")
-  
-  blankmap <- ggplot(text2,aes(1,1))+geom_blank(aes(3,3))+
-    theme(
-      plot.background = element_blank(), 
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(), 
-      panel.border = element_blank(),
-      panel.background = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      axis.text.x = element_blank(), 
-      axis.text.y = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.ticks.y = element_blank()) +
-    theme(plot.margin = unit(c(a,b,c, d),"cm")) +
-    annotation_custom(grob = tableGrob(text2),xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
-  #browser()
-  grid.arrange(p0, blankmap, p1, p2, ncol=2) 
+  plot(l,main="Prediction")
+  points(o$data$lon,o$data$lat)
 }
 
-#' plot.dseg
-#' 
-#' plot.dseg plots the segregated model
-#' @param o is a model object from whywhere
-
-plot.dseg <- function(o) {
-  g1=as.numeric(o$lookup$g1)
-  g2=as.numeric(o$lookup$g2)
-  g1 = data.frame(x=o$lookup$levels,y=g1/sum(g1))
-  g2 = data.frame(x=o$lookup$levels,y=g2/sum(g2))
-  #print(o$lookup)
-  #print(o$name)
-  bins=factor2breaks(o$lookup$factors)
-  o$lookup[,width:=diff(bins)]
-  o$lookup[,Values:=bins[-1]-width/2]
-
-p=ggplot(o$lookup, aes(x=Values, y=prob, width=width)) + 
-  geom_bar(aes(fill=1), stat="identity", position="identity") 
-  #geom_line(data=o$lookup, aes(x=Values, y=g1), colour="blue") +
-  #geom_line(data=o$lookup, aes(x=Values, y=g2), colour="green")
-  p
+plot.dseg<-function(o,legend.loc="topright") {
+  mids=barplot(o$lookup$prob,o$lookup$width,
+               names.arg=o$lookup$cuts,main="Model")
+  legend( legend.loc, legend=c("P(E)","P(E|S)","P(S|E)"),lty=c(1,2,0), 
+          pch=c(1,2,15),bg=c(0,0,"gray") )
+  prior=o$lookup$count/sum(o$lookup$count)
+  post=o$lookup$N/sum(o$lookup$N)
+  lines(mids,prior,lty=1)
+  lines(mids,post,lty=2)
+  points(mids,prior,pch=1)
+  points(mids,post,pch=2)
 }
 
-plot.map<-function(l,Pres=NULL) {
-  #browser()
-  map.p <- rasterToPoints(l)
-  df <- data.frame(map.p)
-  #Make appropriate column headings
-  colnames(df) <- c("Longitude", "Latitude", "MAP")
-  #Call in point data, in this case a fake transect (csv file with lat and lon coordinates)
-  #sites <- data.frame(read.csv(“/your/path/to/pointfile.csv”))
-  sites=Pres
-  #Now make the map
-  
-  p2=ggplot(data=df, aes(y=Latitude, x=Longitude)) +
-    geom_raster(aes(fill=MAP)) +
-    coord_equal(ratio = 1)
-  
-  if (!is.null(Pres)) p2=p2 + geom_point(data=sites, aes(x=lon, y=lat), color="green", size=3, shape=1) +
-    #theme_bw() +
-    #coord_equal() +
-    #scale_fill_gradient("MAP (prob)", limits=c(0,2500)) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16, angle=90),
-          axis.text.x = element_text(size=14),
-          axis.text.y = element_text(size=14),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          legend.position = "right"
-    )
-  p2
-}
 
 #From dismo evaluate
-auc<-function(data) {
-  data=na.omit(data)
+myauc<-function(data) {
+  #data=na.omit(data)
   p=data[pa==1,prob]
   a=data[pa==0,prob]
   np=length(p);na=length(a)
@@ -413,25 +415,23 @@ auc<-function(data) {
 }
 
 
-evaluate.ww<-function(test,obj) {
-  Basis=test$data[,.(lon,lat)]
-  ras = getraster(obj$result$file[1],test$ext)
+evaluate.ww<-function(test,obj,remove.val=NA) {
+  Basis=test[,.(lon,lat)]
+  file=obj$result$file[1]
+  filename=paste(obj$dirname,obj$result$file[1],sep="/")
+  ras = getraster(filename,test$ext)
+  e=test[,values := as.numeric(extract(ras, Basis))]  
   
-  e=test$data[,values := as.numeric(extract(ras, Basis))]  
-  #Do the glm  
-  ev1<-evaluate(e[pa==1],e[pa==0],obj$glm)
-  BAUC=round(slot(ev1,"auc"),2)
-  
+  if (!is.na(remove.val)) e=e[value!=remove.val]
+  #browser()
   #Do prediction - cant use predict.dseg as raster based
-  n1 = factor2breaks(obj$lookup$factors)
-  e[,factors:=cut(values, n1)]
-  setkey(e, factors)
- 
-    p = obj$lookup[e]
-    auc = auc(p)
-    o = list(WW = auc, GLM=BAUC)
-    o
+  cuts=c(obj$lookup$cuts,max(e$value)+1)
+  p1=sapply(e$value,function(x) which(cuts>x)[1]-1)
+  #browser()
+  e[,prob:=obj$lookup$prob[p1]]
+  list(auc=myauc(e),fitted.values=e$prob,pa=e$pa)
 }
+
 
 
 #' dokfold
@@ -441,24 +441,43 @@ evaluate.ww<-function(test,obj) {
 #' @param k is the number of reps
 #' @param files is the files
 
-dokfold<-function(data_set,k=5,files=files,segment="quantile") {
+dokfold<-function(data,k=5,files=files,dirname=".",segment="quantile") {
   kfold=1:k
-  data_set$data[,k:=kfold]
-  rstat=data.table(name=NA,WWtr=NA,GLMtr=NA,WWte=NA,GLMte=NA)
+  data_set=as.data.table(data)
+  data_set[,k:=kfold]
+  rstat=data.table()
   for (i in kfold) {
-    train_set=list(data=data_set$data[k!=i],ext=data_set$extent)
-    r0=ww(train_set,files,segment=segment)
-    test_set=list(data=data_set$data[k==i],ext=data_set$extent)
-    r1=evaluate.ww(test_set,r0)
+    train_set=data_set[k!=i]
+    train_set<-train_set[,k:=NULL]
+    w0=ww(e,files,dirname=dirname,type="pa")
+    w0a=evaluate.ww(e,w0)
+    g0=glm(pa~values+I(values^2)+I(values^3),data=e, family=binomial(link="logit"))
+    ev<-evaluate(e[pa==1],e,g0)
+    g0a=round(slot(ev,"auc"),3)
+    
+    #test set
+    test_set=data_set[k==i]
+    test_set$k=NULL
+    w1a=evaluate.ww(test_set,w0)
+    ev=evaluate(test_set[pa==1],test_set,g0)
+    g1a=round(slot(ev,"auc"),3)
+    
+    stat=list(file=w0$result$file[1],GLMtrain=g0a,GLMtest=g1a,
+              WWtrain=w0a$auc,WWtest=w1a$auc)
     #browser()
-    stat=list(name=r0$name,WWtr=r0$WW,GLMtr=r0$GLM,WWte=r1$WW,GLMte=r1$GLM)
     rstat=rbind(rstat,stat)
   }
   rstat=as.data.frame(na.omit(rstat))
   m=apply(rstat[,2:k],2,mean)
   s=apply(rstat[,2:k],2,sd)
-  x=data.table(rbind(m,s))
-  x[,name:=c("mean","sd")]
+  x=data.table(rbind(m,s/sqrt(k)))
+  x[,file:=c("mean","s.e.")]
   rstat=rbind(rstat,x)
 }
 
+quanff <- function(vals,freq,quant) {
+  ord <- order(vals)
+  cs <- cumsum(freq[ord])
+  browser()
+return(vals[max(which(cs<quant))+1])
+}

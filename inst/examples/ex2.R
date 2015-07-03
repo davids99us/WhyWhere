@@ -3,16 +3,14 @@ library(dismo)
 library(data.table)
 
 #Does 5 fold validation
-files <- list.files(path=paste(system.file(package="dismo"), 
-                               '/ex',sep=''), pattern='grd', full.names=TRUE )
+path=paste(system.file(package="dismo"),'/ex',sep='')
+files <- list.files(path, pattern='grd')
 file <- paste(system.file(package="dismo"), '/ex/bradypus.csv',sep='')
 Pres <- fread(file,  header=T,sep=",")
 Pres$species=NULL
-data_set=presample(Pres,files[1])
 k=5
-
-#Do the 
-rstats=dokfold(data_set,k=5,files=files)
+e=presample(Pres,paste(path,"bio7.grd",sep="/"))
+rex2=dokfold(e,k=5,files=c("bio7"),dirname=path)
 
 
 
