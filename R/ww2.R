@@ -274,7 +274,7 @@ presample<-function(data, file=NA,trim=TRUE,e=1,extent=NA) {
   data
 }
 
-<<<<<<< HEAD
+
 
 goglm<-function(data,files,dirname) {
   Pfiles=paste(path,files,sep="/")
@@ -288,18 +288,7 @@ goglm<-function(data,files,dirname) {
 }
 
 
-=======
-goglm<-function(data,files,dirname) {
-  Pfiles=paste(path,files,sep="/")
-  g=c()
-for (i in Pfiles)  {
-  #Run GLM for comparison
-  e= presample(data,i)
-  g=c(g,myglm(e)$auc)
-}
-data.table(file=files,GLM=g)
-}
->>>>>>> origin/master
+
 
 verbose<-function(data,text,v=NA) {
   if (is.na(v)) v=verbose.flag
