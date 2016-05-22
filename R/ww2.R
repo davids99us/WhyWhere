@@ -177,16 +177,7 @@ dseg1 <- function(file, ext, data, type="po",remove.val=NA,
 
 
 
-goglm<-function(data,files,dirname) {
-  Pfiles=paste(path,files,sep="/")
-  g=c()
-for (i in Pfiles)  {
-  #Run GLM for comparison
-  e=presample(data,i)
-  g=c(g,myglm(e)$auc)
-}
-data.table(file=files,GLM=g)
-}
+
 
 myglm<-function(e) {
 #if (dim(e)[2]==5) {
@@ -281,6 +272,17 @@ presample<-function(data, file=NA,trim=TRUE,e=1,extent=NA) {
     #data[,eval(paste("V",j,sep="")):=extract(ras,cbind(lon,lat))]
   data[,ID:=.I]
   data
+}
+
+goglm<-function(data,files,dirname) {
+  Pfiles=paste(path,files,sep="/")
+  g=c()
+for (i in Pfiles)  {
+  #Run GLM for comparison
+  e=presample(data,i)
+  g=c(g,myglm(e)$auc)
+}
+data.table(file=files,GLM=g)
 }
 
 verbose<-function(data,text,v=NA) {
