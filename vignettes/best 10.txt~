@@ -1,0 +1,26 @@
+without 0
+
+[1] "lccld08.pgm"                      "wrcla05.pgm"                     
+
+  [3] "wrcla03.pgm"                      "lccld07.pgm"                     
+
+  [5] "wrcla04.pgm"                      "lcprc09.pgm"                     
+
+  [7] "wrcla06.pgm"                      "lccld06.pgm"                     
+
+  [9] "malbsp.pgm"                       "t00an1.3.pgm"  
+
+
+
+with 0
+
+[1] "wrcla03.pgm"                      "wrcla04.pgm"                     
+
+  [3] "wrcla05.pgm"                      "wrcla06.pgm"                     
+
+  [5] "malbsp.pgm"                       "lccld08.pgm"                     
+
+  [7] "fnocwat.pgm"                      "lcprc09.pgm"                     
+
+  [9] "lccld07.pgm"                      "whsoil.pgm"          
+

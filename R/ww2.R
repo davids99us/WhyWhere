@@ -123,11 +123,11 @@ odds<-function(S,G) {
 #' @param min.breaks minimum unique elements
 #' @return A model object membership 
 
-dseg1 <- function(file, ext, data, type="po",remove.val=NA,
+dseg1 <- function(ras, data, type="po",remove.val=NA,
                   min.res=100,min.breaks=3,
                   max.breaks=10,silent=FALSE,
                   segment="quantile", unique=1) {
-  ras = getraster(file,ext)
+  
   data[,value:=extract(ras,cbind(lon,lat))]
   counts=getlookup1(data,ras,type)
    
@@ -177,16 +177,7 @@ dseg1 <- function(file, ext, data, type="po",remove.val=NA,
 
 
 
-goglm<-function(data,files,dirname) {
-  Pfiles=paste(path,files,sep="/")
-  g=c()
-for (i in Pfiles)  {
-  #Run GLM for comparison
-  e=presample(data,i)
-  g=c(g,myglm(e)$auc)
-}
-data.table(file=files,GLM=g)
-}
+
 
 myglm<-function(e) {
 #if (dim(e)[2]==5) {
@@ -283,6 +274,20 @@ presample<-function(data, file=NA,trim=TRUE,e=1,extent=NA) {
   data
 }
 
+
+goglm<-function(data,files,dirname) {
+  Pfiles=paste(path,files,sep="/")
+  g=c()
+  for (i in Pfiles)  {
+    #Run GLM for comparison
+    e=presample(data,i)
+    g=c(g,myglm(e)$auc)
+  }
+  data.table(file=files,GLM=g)
+}
+
+
+
 verbose<-function(data,text,v=NA) {
   if (is.na(v)) v=verbose.flag
   if (v==0) return()
@@ -326,7 +331,10 @@ model.ww <- function(data, files, dirname=".", multi=1,plot=FALSE,
   for (i in files) {
     if (verbose.flag>0) print(i)
     filename=paste(dirname,i,sep="/")
-    a = dseg1(filename, extent, data, remove.val=remove.val,type=type)
+    ras = getraster(filename,extent)
+    #browser()
+    a = dseg1(ras, data, remove.val=remove.val,type=type)
+    
     if (is.null(a)) {
       print(paste("Skipping",basename(i)))
     } else {
@@ -337,6 +345,7 @@ model.ww <- function(data, files, dirname=".", multi=1,plot=FALSE,
     #print(paste(a$name,a$AUC))
     if (i == result[1]$file) {
       topdata = a$data #current is best - save pa probs
+      topras =ras #save best raster sofar
       if (plot) {
         plot.ww(a)
         #browser()
@@ -361,7 +370,8 @@ model.ww <- function(data, files, dirname=".", multi=1,plot=FALSE,
   }
   exp=strsplit(result[1]$file,"&")
   filename=paste(dirname,exp[[1]][1],sep="/")
-  a = dseg1(filename, extent, data,remove.val=remove.val,type=type)
+  ras = getraster(filename,extent)
+  a = dseg1(ras, data,remove.val=remove.val,type=type)
   a$result = result
   a$dirname=dirname
   #setkey(a$lookup,levels)

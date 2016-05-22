@@ -1,0 +1,22 @@
+GLM, WW2
+
+1. Input long and lat occurrences, 1. Input long and lat occurrences
+
+2. Presample background points, <optional>
+
+3. Input all env. vars, 2. Start loop through list of env. vars. 
+
+5. Create flat file,2.1 Input env. variable
+
+4. Fit additive model, 2.2 Fit segmented model
+
+5. Output model, 2.3 <optional> Evaluate conjunction with best model so far
+
+6. Evaluate model, 3. Output ordered list of models evaluated
+
+
+
+
+
+
+

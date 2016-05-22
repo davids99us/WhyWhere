@@ -1,0 +1,42 @@
+File, Variable, Source, Resolution (deg), Type
+
+
+
+"bio1.grd",Annual Mean Temperature,BIOCLIM, 0.5, real
+
+
+
+"bio12.grd", Annual Precipitation,BIOCLIM, 0.5, real
+
+
+
+"bio16.grd", Precipitation of Wettest Quarter,BIOCLIM, 0.5, real
+
+
+
+"bio17.grd", Precipitation of Driest Quarter,BIOCLIM, 0.5, real
+
+
+
+"bio5.grd",  Max Temperature of Warmest Month,BIOCLIM, 0.5, real
+
+
+
+"bio6.grd", Min Temperature of Coldest Month,BIOCLIM, 0.5, real
+
+
+
+"bio7.grd",  Temperature Annual Range (BIO5-BIO6),BIOCLIM, 0.5, real
+
+
+
+"bio8.grd",  Mean Temperature of Wettest Quarter,BIOCLIM, 0.5, real
+
+
+
+"biome.grd",Terrestrial Ecoregions of the World,WWF, 0.5, category
+
+
+
+
+

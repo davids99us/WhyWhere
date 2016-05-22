@@ -1,0 +1,111 @@
+\begin{thebibliography}{10}
+
+\bibitem{citeulike:585800}
+Jane Elith, Catherine~H Graham, Robert~P Anderson, Miroslav Dudik, Simon
+  Ferrier, Antoine Guisan, Robert~J Hijmans, Falk Huettmann, John~R Leathwick,
+  Anthony Lehmann, Jin Li, Lucia~G Lohmann, Bette~A Loiselle, Glenn Manion,
+  Craig Moritz, Miguel Nakamura, Yoshinori Nakazawa, Jacob~M Overton,
+  Townsend~A Peterson, Steven~J Phillips, Karen Richardson, Ricardo
+  Scachetti-Pereira, Robert~E Schapire, Jorge Soberon, Stephen Williams, Mary~S
+  Wisz, and Niklaus~E Zimmermann.
+\newblock {Novel methods improve prediction of species distributions from
+  occurrence data}.
+\newblock {\em Ecography}, 29(2):129--151, April 2006.
+
+\bibitem{Nix:1986yg}
+H~Nix.
+\newblock {A biogeographic analysis of Australian Elapid snakes.}
+\newblock In R~Longmore, editor, {\em Atlas of Australian Elapid Snakes},
+  volume~8, pages 4--15. Australian National University, 1986.
+
+\bibitem{Austin:1996np}
+M~Austin and J~Meyers.
+\newblock {Current approaches to modelling the environmental niche of
+  eucalypts: Implication for management of forest biodiversity}.
+\newblock {\em Forest Ecology And Managment}, 85(1-3):95--106, 1996.
+
+\bibitem{Hijmans2005}
+Robert~J Hijmans, Susan~E Cameron, Juan~L Parra, Peter~G Jones, and Andy
+  Jarvis.
+\newblock Very high resolution interpolated climate surfaces for global land
+  areas.
+\newblock {\em International journal of climatology}, 25(15):1965--1978, 2005.
+
+\bibitem{Hayssen2010}
+Virginia Hayssen.
+\newblock Bradypus variegatus (pilosa: Bradypodidae).
+\newblock {\em Mammalian Species:}, 42(1):19--32, 2010.
+
+\bibitem{Davey:1991yg}
+S~M Davey and D~R~B Stockwell.
+\newblock {Incorporating Wildlife Habitat Into An Ai Environment - Concepts,
+  Theory, And Practicalities}.
+\newblock {\em AI Applications}, 5(2), 1991.
+
+\bibitem{Stockwell:2006xt}
+David R~B Stockwell.
+\newblock {Improving ecological niche models by data mining large environmental
+  datasets for surrogate models}.
+\newblock {\em Ecological Modelling}, 192:188--196, 2006.
+
+\bibitem{Stockwell:2006rf}
+David R~B Stockwell.
+\newblock {\em {Ecological Niche Modeling: Ecoinformatics in Application to
+  Biodiversity}}, chapter~7.
+\newblock CRC Press, 2006.
+
+\bibitem{Phillips2007}
+Steven~J Phillips, Miroslav Dud{\'\i}k, and Robert~E Schapire.
+\newblock Maxent software for species habitat modeling, 2007.
+
+\bibitem{Heckbert82}
+Paul Heckbert.
+\newblock {Color image quantization for frame buffer display}.
+\newblock In {\em SIGGRAPH '82: Proceedings of the 9th annual conference on
+  Computer graphics and interactive techniques}, pages 297--307, New York, NY,
+  USA, 1982. ACM Press.
+
+\bibitem{Olson2001}
+David~M Olson, Eric Dinerstein, Eric~D Wikramanayake, Neil~D Burgess, George~VN
+  Powell, Emma~C Underwood, Jennifer~A D'amico, Illanga Itoua, Holly~E Strand,
+  and John~C Morrison.
+\newblock Terrestrial ecoregions of the world: A new map of life on earth a new
+  global map of terrestrial ecoregions provides an innovative tool for
+  conserving biodiversity.
+\newblock {\em BioScience}, 51(11):933--938, 2001.
+
+\bibitem{Freedman1981}
+David Freedman and Persi Diaconis.
+\newblock On the histogram as a density estimator:l 2 theory.
+\newblock 57(4):453--476--, 1981.
+
+\bibitem{Stockwell:1993yg}
+D~R~B Stockwell.
+\newblock {Lbs - Bayesian Learning-System For Rapid Expert System-Development}.
+\newblock {\em Expert Systems With Applications}, 6(2), 1993.
+
+\bibitem{Stockwell:1997yg}
+D~R~B Stockwell.
+\newblock {Generic predictive systems: An empirical evaluation using the
+  Learning Base System (LBS)}.
+\newblock {\em Expert Systems With Applications}, 12(3), 1997.
+
+\bibitem{Zadeh1965}
+L.A. Zadeh.
+\newblock Fuzzy sets.
+\newblock {\em Information and Control}, 8(3):338 -- 353, 1965.
+
+\bibitem{Irani1993}
+U.~M. Fayyad and K.~B. Irani.
+\newblock Multi-interval discretization of continuous-valued attributes for
+  classification learning.
+\newblock {\em Artificial intelligence}, 13:1022–1027, 1993.
+
+\bibitem{Sanchez-Cordero2008}
+V{\'\i}ctor S{\'a}nchez-Cordero, David Stockwell, Sahotra Sarkar, Hawoei Liu,
+  Christopher~R Stephens, and Joaqu{\'\i}n Gim{\'e}nez.
+\newblock Competitive interactions between felid species may limit the southern
+  distribution of bobcats lynx rufus.
+\newblock {\em Ecography}, 31(6):757--764, 2008.
+
+\end{thebibliography}

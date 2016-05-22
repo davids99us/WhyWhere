@@ -1,0 +1,241 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{float}
+\floatplacement{figure}{H}
+\usepackage{lineno}
+\linenumbers
+\usepackage{fancyhdr}
+%-------------------------------------------------------------------------
+% take the % away on next line to produce the final camera-ready version
+% Be sure to remove \thispagestyle{fancy} as well after the \maketitle.
+%\pagestyle{empty}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[CO, CE]{\texttt{-Manuscript Draft-}}
+\setlength{\headheight}{2\baselineskip}
+\renewcommand{\headrulewidth}{0pt}
+ 
+
+
+%\VignetteIndexEntry{Using whywhere}
+\newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}} 
+\usepackage{listings}
+\lstdefinestyle{myCustomMatlabStyle}{
+  language=R,
+  stepnumber=1,
+  basicstyle=\footnotesize,  
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false
+}
+\DeclareTextFontCommand{\emph}{\bfseries}
+
+
+
+\title{\texttt{whywhere 2.0:} An R package for speces prediction using segmention of the niche response}
+\author{David R.B. Stockwell\footnote{All correspondence to be addressed to the author at david.r.stockwell@cqu.edu.au, Adjunct Researcher at Central Queensland University.}}
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\maketitle
+\date
+\thispagestyle{fancy}
+\begin{abstract}
+Species distribution modeling is playing a significant role in applied conservation.  While most approaches employ continuous models of the response of species to the environmental variables: generalised linear regression and MaxEnt, discontinuous approaches that segment the environmental space discontinuously have also proven useful: BioClim and GARP.  This paper present a further development and testing of a segmentation method in an R implemention: \texttt{WhyWhere} \cite{Stockwell:2006xt}. Developed for data mining predictive biodiversity data for predictive and explanatory models, the current advances demonstrate comparative accuracy with the GLM approach on the Bradypus test data from the \texttt{dismo} R package.  We illustrate the solutions to issues arising from explanatry modelling, particularly in the big data applications.  
+\end{abstract}
+
+\section{Introduction} \label{sec:intro}
+
+Modelling of species distributions has long been used to predict the potential distributions of species based on environmental relationships from sparce point occurrence data such as sightings, museum records \cite{Joseph2002} or other opportunisitc sources. Mathematically the problem consists of defining the density or probability of the suitability of areas of the space for particular species in a high-dimensional environmental space and the projecting this density onto into the 2D surface to produce a continuous map.  There are many ways this can be done, each raising particular theoretical and practical issues, the most commonly addressed being the relative predictive accuracy, and to a lesser extent the explanatory capacity of the resulting models. The progress of information technology towards bigger data, cloud based and embedded analysis provides the ongoing challenge of incorporating wildlife habitat into an Artificail Intelligence environment \cite{Davey:1991yg}.
+
+In recent years there has been a growing adoption of the R statistical language providing a flexible basis for developing and distributing models \cite{Stockwell:2006rf}.  A newly developed package for species modelling (eg. MaxEnt, Bioclim, Domain, GLM, GAM, and RandomForest) has been collated in R  \texttt{dismo}.  Other R packages have made this modelling more accessible, particularly the \texttt{raster} package for handling gridded spatial data \cite{Etten2012}, allowed more model intercomparison and techniques such as models composed of multiple models.  A work flow for species modeling using spatial data and presence only records was developed in the GARP system \cite{Stockwell:1999yg}.  Elements of this work flow such as random sampling of background points are now widely used. The architecture of methods capable of mining data large databases of geographic data were proposed in \texttt{Whywhere} with potential for implementing in a cloud-based archetecture developed, have not yet been available.  The R implementation of WhyWhere utilises a new package called \texttt{data.table} for fast aggregation of large data \cite{Dowle2014}. This paper addresses issues and questions that arise in developing a more streamlined, automated data modelling process from geographic databases.
+
+The guide is arranged as follows.  Section 2 describes background and related work on the criteria outlined above.  Section 3 describes the algorithm and section 4 reports the results on a well known dataset on two environmental data sets: one a small set of 9 prepared spatial layers, and another a large set of 1000 global data-sets.
+
+\section{Related Work}
+
+The nature of the problem  has three unique problems to solve: the large number of potential correlates with species reponse, the non-linear nature of species responses, interpretation of models in terms of ecological theory.  Here were describe the WhyWhere solution and how the new system has advanced.
+
+\subsection{Number of correlates} 
+
+As geographic variables come in varying extents, projections and resolutions, most approaches require higher dimensional models must first be coregistered before modelling. The disadvantage of this is the additional processing, inefficiency of enlarging smaller data sets and loss for data from contracting larger sets.  An ideal method would utilise the data at its native projection and resolution.
+
+Moreover, after coregistraion of geographic layers, most models are run on an intermediate data stage in a 'wide' file format, i.e. with variables in columns and locations in rows. This adds another intermediate processing step where all environmental data must be then be held in memory, which can lead to mempry limitations in the prediction stage when the models abing applied across all of the geographic space.  
+
+The approach of WhyWhere was to transform geographic variables into a compact image format and then to combine at most three variables into the image in the red, green and blue channels.  While fast and compact image processing packages could then be used, this lead to limitations in the range of the variables that were scaled between 0-255, and also did not obviate the need for coregistration of geographic ata sets prior to fusion into an image layer.
+
+Ideally we consider developing the model on one variable at a time.  One advance in WhyWhere 2.0 is the manner of building multidimensional models.  The key insight is that evaluation of the quality of a combination of two or more variables can be delayed and made on the predictions of single variable models, instead of performed in the high-dimensional model space.
+  
+For example, the response of a single variable is called a membership function (for reasons explained later).  Predictions on a single variable produces vector of membership values between zero and one, one membership value for each location.  We can combine the membership vectors for two different variables using a fuzzy AND to produce a new membership vector.  This membership vector can then be evaluated, thus evaluating the variable combination.  The combination of membershp functions follows the AND, OR operators on probability are Zadeh operators \cite{Zadeh1965}:
+
+\begin{equation}
+AND: x \land y = min(f(x),f(y)) \\
+OR: x \land y = max(f(x),f(y)) \\
+\end{equation}
+
+Using this approach eliminates the need to develop and express a high dimensional model, and allows us to focus on the models that optimise the response to each single variable at a time.  This is seen as necessary for data mining where we explore databases of large numbers of variables for the few factors that best predict and explain the response of the species in question.
+
+\subsection{Non-linear responses, mixed types} 
+
+The response of species to environment is generally 'humped' around an ideal or restricted to a range of a variable (eg. the range of temperature tolerances).  Thus ENMS must be at least quadratic in order to correctly represent a fundamental species response, but an ideal method would be robust to any non-linear response type. 
+
+In addition, many environmental variables are categorical variables such as soil and vegetation type.  Environmental data are either continuous (eg. temperature, rainfall) or categorical (eg. biome or soil type).  Ideally a model would integrate both types, but very few do.  
+
+One approach to robust modelling is to provide a range of potenital response types \cite{Phillips2007}.  The approach in WhyWhere is segmentation -- to approximate non-linear responses with a discrete range.  The original WhyWhere \cite{Stockwell:2006xt} used a color quantization algorithm similar to the GIF format.  Quantisation in WhyWhere supported a 3 variable conjunctive model.   Both continuous and categorical variables can be handled in the same framework. For example, the output of the R cut function on the numbers $1..10$ into 5 levels is as follows, while 10 categorical variables could also be represented.
+
+\begin{equation}
+5 levels: (0.991,2.8] (2.8,4.6] (4.6,6.4] (6.4,8.2] (8.2,10]
+
+10 Levels: (0.991,1.9] (1.9,2.8] (2.8,3.7] (3.7,4.6] (4.6,5.5] ... (9.1,10]
+\end{equation}
+
+The cuts do not need to be uniform.  he methods of determining the precise in WhyWhere followed the median cut algorithm attempts to assign equal numbers of points to a limited number of categories category \cite{Heckbert82} in the red, green, blue 3D space.  This has been shown toretaining good appearance, but also has a statistical justification of minimising the variance across the whole, by minimising the variance in each category.  In addition a maximium entropy method of determinignt he best cuts for segmentation is applied [].  Categorical approaches have been claimed to produce suboptimal relative to smoth approachs, but we do a comparison with generalised linear model here to see.
+
+The calculation of the strength of the response is straighforward on segmentation.  The locations where the species occurs can be thought of as a sampling of the environmental space.  For a given data set - presence and absence - there is a count of values in the each category ($G1$).  There is a lesser count of values in the sample of presence points ($G2$).  The change in the distribution of counts from $G1$ to $G2$ indicates strength of the the response of the species to its environment - called the membership function $M$.  A membership function describes a fuzzy truth value as a function $f: \mathbb{R} \rightarrow [0,1]$ from a variable $V$ to the real unit interval $[0,1]$.  
+
+\begin{equation}
+M_i = G2_i/G1_i for each category i 
+\end{equation}
+
+In any sense, what we need is the conditional probability of species being present given the environmental $P(S|G)$ for each category of G.  The frequentist calculations give us $P(G|S)$. While many models attempt to represent the full probability using Bayes Theorem for example, the probability of the occurrence of a species $P(S)$ in opportunistic data is not well defined, and not generally of interest and dependent on season, search effort and other uncontrolled variables.  This leadsd to an approximate equivalence that holds under certain conditions (principally independence of variables) and has been shown to be very useful in model relationships \cite{Stockwell:1993yg,Stockwell:1997yg} where $\beta$ is a normalization factor:
+
+\begin{equation}
+P(S|E) = \beta P(E|S)
+\end{equation}
+
+
+The membership function is a proportional relationship which is sufficient to compare the efficancy is single variables.  The approach to evaluating the strength of the response in the original WhyWhere was significance with the Chi-squared test or a K-S test. However Chi2 doesn't work in evaluating the multivariate case, and there is another approach which is to use the area under the curve of the reciever operating characteristic, or AUC.  
+
+There are many ways to evaluate a model.  The categorical nature of the predicted variable (ie. presences and absences) determined from models outputs in the range of zero to one, (eg. probablistic prediction of a rule, logistic model or descision tree) against a categorical value (presence or absence).  The reciever operating curve (ROC) is widely used to compare such models, while the area under the curve of the receiver operating statistic (AUC) provides a single number estimate of model quality. 
+ 
+\subsection{Ecological interpretation} 
+
+How does the structure of a  multi-dimensional model embody the ecology of the species?  Many model applications are based in other domains (eg. generalised linear model) without clear ecological interpretation.  Difficulting explaining in terms of ecological principles such as compeditive interactions \cite{Sanchez-Cordero2008}.
+
+The principle of Liebig's Law of the Minimum states that growth is controlled by the scarcest necessary resource.  This is logically a fuzzy conjunction of limiting factors -- a Zadeh AND.  Another law of ecology is Gauss's law of competitive exclusion.   This is a proposition that two species competing for the same resource cannot coexist at constant population, due to effect of slight advantages magnified over generations.  This is a fuzzy disjunction -- a Zadeh OR.  Thus fuzzy AND and OR can represent established ecological theory.
+
+The reason small number of variables.  The reason the combinations are logical.
+
+\section{WhyWhere Algorithm}
+
+This section describes the WhyWhere algorithm.  The inputs to \texttt{WhyWhere} are: a \texttt{data.table} with the longitude and latitude of known locations, and a list of environmental data files that may be read into the \texttt{raster} package.  
+
+The first step is 'presample' which is given a set of presence data locations, and a geographic file that serves as a mask.  This produces a list of the presence data and a randomly sampled list of sites of both presence and absence.
+
+This file is then imput to the main routine with a list of the geographic files. Parameters include \emph{multi} for searching conjunctions of variables, \emph{split} for split testing on train and test sets, \emph{trim} to trim the spatial variables to the range of the location points.  The mask file defines the geographic extent for the sampling the background data.  If absences are available then they need not be generated.  
+
+The algorithm poceeds by looping through the environmental variables.  A table of the best variable so-far is retrained.  In the current implementation of multi-dimensional model, only the best variable is a combination of each new variables by applying the minimum of the item probability vectors and recalculating the AUC. 
+
+The current algorithm implements a beam search in which a conjunction of each new variable is tested with the best variable so far.  Alternaitve approaches to searching the space of conjunctions may be implemented in future.  
+
+\lstset{basicstyle=\tiny,style=myCustomMatlabStyle,caption={Listing of the main algorithm},label=alg1}
+\begin{lstlisting}[frame=single]
+input locations  
+input a mask file
+prepare background points and combine with presence points
+for all environmental files do
+ develop membership function for file
+ insert AUC and variable name into ordered result 
+ test conjunct of this variable with best so far
+ if result is better then insert into ordered result
+output table of results
+\end{lstlisting}
+
+
+It is possible to monitor the progress of \texttt{WhyWhere} with the plot option.  This plots out the best model sofar and prints out a list of the best models considered.  This protocol would also support a streaming work flow.
+
+Data points for the feeding brown-throated three-toed sloth (\emph{Bradypus variegatus}) are documented and applied to models in \texttt{dismo}. The environmental data consist of 9 environmental files covering the South American continent.  
+
+Figure~\ref{fig1} shows (A) the top variable, (B) the AUC of the top models, (C) the lookup table that is the basis of the model, and (D) the predicted distribution with the presence points plotted.  In this distribution the result is very similar to the results from GARP and MaxEnt in paper \cite{Phillips2007}.  Table~\ref{tab2} lists the results for all variables.
+
+\begin{figure}[htbp]
+\begin{center}
+<<fig=T,echo=T>>=
+source("../R/ww2.R")
+source("../inst/examples/ex1.R")
+@
+\caption{\label{fig1} \texttt{WhyWhere} predicted distribution of the Bradypus data set.}
+\end{center}
+\end{figure}
+
+
+Figure~\ref{fig1}.A shows the highest rated variable in the Bradypus dataset, listed in panel Figure~\ref{fig1}.B. The lookup table is illustrated as a bar graph in Figure~\ref{fig1}.C with categorical ranges  listed on the \emph{x} axis.  The prior distribution ($G1$) is the blue line, and the distribution of presences ($G2$) is the dashed line.  The membership function is  the grey bars ($G1/G2$).  Note the almost uniform distribution of background classes due to the quantile cuts.  The predicted distribution of Bradypus is on Figure~\ref{fig1}.D. 
+
+<<echo=FALSE, eval=TRUE, results=tex>>=
+xtable(result$result,caption="These are the results", label="tab2")
+@
+
+
+The core function is th membership function that produces the categorisation and a lookup table for the membership in each category.  Below is an example of a lookup table.
+
+Table~\ref{tab1} lists and example lookup table.  
+
+<<echo=FALSE, eval=TRUE, results=tex>>=
+source("../R/ww2.R")
+xtable(result$lookup,caption="These are the results", label="tab1")
+@
+
+\section{Experiments}
+
+We evaluate the performance of WhyWhere 2.0 on independent sets with a five-fold validation. We then compare different forms of segmentation, and finally apply the world dataset that was used in WhyWhere 1.0 to the explanation of Bradypus distribution.  
+
+
+\subsection{Five-fold Validation}
+
+Table~\ref{tab3} shows the AUC of these data on a five fold valiation. The data was prepared by generating a data set using presample, and then labeling each row from 1 to five.  The analysis was done sequentially holding back one fifth of the set for evaluation.   
+ 
+<<echo=FALSE, eval=TRUE, results=tex>>=
+source("../inst/examples/ex2.R")
+xtable(rstats,caption="These are the comparative results", label="tab3")
+@
+
+The results show similar accuracies between test and training sets, and between the Whywhere and the GLM models.  Each time the same variable bio7 was chosen. The only difference was a slightly lower result for the test set on WhyWhere, indicating that a slightly greater overfitting.  This is to be expected as the segmentation introduces a greater number of parameters than the glm in the introduction of cut boundaries.  However, it is still quite acceptable.
+
+\subsection{Alternate segmentations}
+
+
+Table~\ref{tab4} shows the results of a five-fold validation of these data with other segmentation approaches: even distribution of cuts, distributed by quantile and an entropy optimising methods.  The even method as the name suggests segments the variable evenly over the range.  The quantile method segments the variable so that as far a possible an equal number of data.  
+The number of values to segment into factor levels is determined using Freedman-Diaconis rule.
+
+The entropy method uses the R package \texttt{discretization} using the routine cutPoints() that perform the Minimum Description Length Principle.mdlp.  These are not to be a comprehensive list of discretization method only to show performance of the quantile approach a comparison of some obvious choices.
+
+
+ 
+<<echo=FALSE, eval=TRUE, results=tex>>=
+source("../inst/examples/ex3.R")
+xtable(r,caption="These are the comparative results", label="tab4")
+@
+
+The segmentation method that performs best on the test set are the even and quantile methods, and the performance is simular onthe training set.  This provides support for the quantile approach that was used in WhyWhere.  Although further testing of segmention approach may lead to more improvements. 
+
+\subsection{World Data}
+
+Figure~\ref{fig2} shows the Bradypus data applied to a dataset of 940 layers of world extent that were previously used in WhyWhere1.0 and descrobed.  These contain many groups of variables listed in  \cite{Stockwell:2006rf} including satellite greening, monthly temperature and rainfall and many others.  They are also of different resolution ranging from x to topo data sets with resolutions.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics{fnocwat.pdf}
+\caption{\label{fig2} \texttt{WhyWhere} predicted distribution of using world data set.}
+\end{center}
+\end{figure}
+
+
+
+<<echo=FALSE, eval=TRUE, results=tex>>=
+load(file="../result.Rda")
+xtable(result$result[1:5],caption="These are the results", label="tab4")
+@
+
+Table~\ref{tab4} ists the top 5 results from the algorithm.  The top three variables are  Navy Terrain Data--Percent Water Cover.  The second and third are soil units srzsoil file title  : Staub and Rosenzweig Zobler Soil Units, WebbRosenweg soil types. That these veriables have the greates accuracy may be indicative of habitat features.  Bradypus variegatus does leave the trees and while it crawls along the forest floor poorly, it does swim well.  Its distribution may be linked to the flooded forest enabling it to find other trees for food  ( Rodrigues; Britton 1941; Worman 1946; Tirler 1966). The present of soil classification may be indicative of the soils in this flooded forest environment.  It is only the fifth variable that is climatic: Leemans and Cramer August Precipitation (mm/month).  This is typical that climatic variable provide a broadeer habitat description that is necessarily less accurate at predicting the species than habitat features.  
+
+We note the accuracy of these top variables is higher than shown in Table~\ref{tab2}. This is not a definitve examinations of determinants of species, but serves to illustrate the gains in accuracy and potential explanatory factors availabe from this approach.
+
+\section{Conclusion and Further Work}
+
+The WhyWhere package provides a useful approach to exploring the interaction between spatial data and point locations. The changes to the original WhyWhere method implemented in this package can bring greater utility while maintaining the verifyable increases in accuracy from the big data approach. For example, by enabling processing on cloud based data sets WhyWhere will permit analysis of data sets that were not possible before.  The  new method reduces few steps in the whole work flow of data processing by simplifying development of more complex models. The R package \texttt{WhyWhere} is a useful packages to fit, plot and test empirical species as a conjunction of response functions.  More complex logical expressions are planned, as are improvements in computational efficiency and access to cloud data.   
+
+
+\bibliographystyle{plain}
+\bibliography{../../library}
+\end{document}

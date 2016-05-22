@@ -1,0 +1,12 @@
+File, Variable, Source, Resolution (deg), Type
+
+fnocwat.txt, Navy Terrain Data--Percent Water Cover, GED, 0.167, real
+
+lccld07.txt, Leemans and Cramer July Cloudiness (% Sunshine), GED, 0.5, real
+
+i00an1.1.pgm, World Ocean Atlas 2001 - silicate at depth 0 metre , GED, 1, real
+
+etopo.pgm, Elevation from the National Geographic Data Center, GED, 0.0333, metres
+
+
+

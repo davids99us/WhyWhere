@@ -1,0 +1,34 @@
+Method,AUC
+
+Bioclim, 0.66
+
+Domain, 0.73
+
+Mahalanobis, 0.80
+
+GLM, 0.81
+
+Decision_Trees, 0.83
+
+SVM, 0.62
+
+Geographic, 0.90
+
+Convex_Hulls, 0.74
+
+Circles, 0.84
+
+geoIWD, 0.89
+
+voroniHull, 0.50
+
+GARP, 0.78
+
+MaxEnt, 0.87
+
+WhyWhere(WorldClim), 0.84
+
+WhyWhere(GED), 0.91
+
+
+
