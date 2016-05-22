@@ -1,8 +1,7 @@
 #library(maptools)
 library(dismo)
 library(data.table)
-library(xtable)
-library(ggplot2)
+
 
 path=paste(system.file(package="dismo"),'/ex',sep='')
 files <- list.files(path, pattern='grd')
