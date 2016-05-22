@@ -279,7 +279,7 @@ goglm<-function(data,files,dirname) {
   g=c()
 for (i in Pfiles)  {
   #Run GLM for comparison
-  e=presample(data,i)
+  e= presample(data,i)
   g=c(g,myglm(e)$auc)
 }
 data.table(file=files,GLM=g)
